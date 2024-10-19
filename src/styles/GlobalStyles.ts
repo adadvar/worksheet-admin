@@ -100,6 +100,12 @@ const GlobalStyles = createGlobalStyle`
   --border-radius-lg: 9px;
 
 }
+/* 
+@font-face {
+	font-family: "iran" ;
+	src: url("./assets/fonts/IRANSans(FaNum)_Light.ttf") format("embedded-opentype"),
+		 url("./assets/fonts/IRANSans(FaNum)_Light.ttf") format("truetype");
+} */
 
 *,
 *::before,
@@ -117,8 +123,8 @@ html {
 }
 
 body {
-  font-family: "Poppins", sans-serif;
-  color: var(--color-grey-700);
+  font-family: "Vazirmatn", sans-serif;
+    color: var(--color-grey-700);
 
   transition: color 0.3s, background-color 0.3s;
   min-height: 100vh;
@@ -187,5 +193,5 @@ img {
   /* For dark mode */
   filter: grayscale(var(--image-grayscale)) opacity(var(--image-opacity));
 }
-`
-export default GlobalStyles
+`;
+export default GlobalStyles;
