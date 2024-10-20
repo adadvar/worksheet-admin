@@ -15,7 +15,7 @@ const WorksheetTable = () => {
 
   return (
     <Menus>
-      <Table columns="1fr 2fr 1fr 1fr 1fr 1fr 2fr">
+      <Table columns="1fr 2fr 1fr 1fr 1fr 1fr 1fr 3.2rem">
         <Table.Header>
           <div>image</div>
           <div>name</div>
@@ -23,13 +23,14 @@ const WorksheetTable = () => {
           <div>subject</div>
           <div>topic</div>
           <div>price</div>
+          <div>date</div>
           <div></div>
         </Table.Header>
 
         <Table.Body
           data={worksheets}
           render={(worksheet: any) => (
-            <WorksheetRow key={worksheet} worksheet={worksheet} />
+            <WorksheetRow key={worksheet.id} worksheet={worksheet} />
           )}
         />
 

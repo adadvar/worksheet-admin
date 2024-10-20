@@ -29,7 +29,7 @@ function DarkModeProvider({ children }: { children: React.ReactNode }) {
   }, [isDarkMode]);
 
   const toggleDarkMode = () => {
-    setDarkMode((isDark: boolean) => !isDark);
+    setDarkMode((isDark: any) => !isDark);
   };
 
   return (

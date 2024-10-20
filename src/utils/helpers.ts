@@ -27,3 +27,36 @@ export const formatCurrency = (value: number) =>
   new Intl.NumberFormat("fa-IR", {
     currency: "IRR",
   }).format(value);
+
+export function formatDuration(duration: string): string {
+  const regex = /(\d+d)?(\d+h)?(\d+m)?/;
+  const match = duration.match(regex);
+
+  if (!match) {
+    return "Invalid duration format";
+  }
+
+  const days = parseInt(match[1]) || 0;
+  const hours = parseInt(match[2]) || 0;
+  const minutes = parseInt(match[3]) || 0;
+
+  let result = "";
+
+  if (days > 0) {
+    result += `${days} روز `;
+  }
+
+  if (hours > 0) {
+    result += `${hours} ساعت `;
+  }
+
+  if (minutes > 0) {
+    if (minutes < 60) {
+      result += "کمتر از یک ساعت";
+    } else {
+      result += `${minutes} دقیقه`;
+    }
+  }
+
+  return result.trim();
+}

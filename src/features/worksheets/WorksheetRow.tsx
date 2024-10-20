@@ -69,6 +69,7 @@ const WorksheetRow = ({
       <Stacked>{subject}</Stacked>
       <Stacked>{topic}</Stacked>
       <Amount>{formatCurrency(price)}</Amount>
+      <Stacked>{age}</Stacked>
       <Modal>
         <Menus.Menu>
           <Menus.Toggle id={worksheetId} />
