@@ -1,4 +1,4 @@
-import { axiosInstance, axiosInstanceWithAuth } from "./axiosInstance";
+import { Axios, AxiosAuth, AxiosFile } from "./axiosInstance";
 
 export interface Worksheet {
   age: string;
@@ -26,62 +26,55 @@ interface Props {
 }
 export async function getWorksheets({ page = 1 }: Props) {
   try {
-    const res = await axiosInstance.get("/worksheet/list", {
+    const res = await Axios.get("/worksheet/list", {
       params: { page },
     });
     return res.data;
   } catch (err: any) {
-    console.log(err);
-    throw new Error("Worksheets could not be loaded");
+    console.log(err.message);
+    throw new Error("کاربرگ ها بارگزاری نشدند");
   }
 }
 
 export async function uploadBanner(params: any) {
   try {
-    const res = await axiosInstanceWithAuth.post(
-      "/worksheet/upload/banner",
-      params
-    );
+    const res = await AxiosFile.post("/worksheet/upload/banner", params);
     return res.data;
   } catch (err: any) {
-    console.log(err);
+    console.log(err.message);
 
-    throw new Error("Worksheet banner could not be uploaded");
+    throw new Error("بنر بارگذاری نشد");
   }
 }
 
 export async function uploadFile(params: any) {
   try {
-    const res = await axiosInstanceWithAuth.post(
-      "/worksheet/upload/file",
-      params
-    );
+    const res = await AxiosFile.post("/worksheet/upload/file", params);
     return res.data;
   } catch (err: any) {
-    console.log(err);
+    console.log(err.message);
 
-    throw new Error("Worksheet file could not be uploaded");
+    throw new Error("فایل بارگذاری نشد");
   }
 }
 
 export async function createWorksheet(worksheet: Worksheet) {
   try {
-    console.log("worksheet", worksheet);
-    const res = await axiosInstanceWithAuth.post("/worksheet", worksheet);
+    const res = await AxiosAuth.post("/worksheet", worksheet);
     return res.data;
-  } catch (err) {
-    console.log(err);
+  } catch (err: any) {
+    console.log(err.message);
 
-    throw new Error("Worksheet file could not be uploaded");
+    throw new Error("کاربرگ ایجاد نشد");
   }
 }
 
 export async function updateWorksheet(id: number, params: any) {
   try {
-    const res = await axiosInstanceWithAuth.put(`/worksheet/${id}`, params);
+    const res = await AxiosAuth.put(`/worksheet/${id}`, params);
     return res.data;
-  } catch (err) {
-    console.error(err);
-    throw new Error("Worksheet could not be updated");
+  } catch (err: any) {
+    console.error(err.message);
+    throw new Error("کاربرگ بروزرسانی نشد");
   }
 }

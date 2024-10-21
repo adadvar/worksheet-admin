@@ -1,4 +1,4 @@
-import { axiosInstance } from "./axiosInstance";
+import { Axios } from "./axiosInstance";
 
 export interface Category {
   banner: string | null;
@@ -14,7 +14,7 @@ export interface Category {
 
 export async function getCategories() {
   try {
-    const res = await axiosInstance.get("/category");
+    const res = await Axios.get("/category");
     return res.data;
   } catch (err: any) {
     console.log(err);

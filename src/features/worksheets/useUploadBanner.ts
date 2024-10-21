@@ -3,14 +3,16 @@ import { uploadBanner as uploadBannerApi } from "../../services/apiWorksheets";
 import toast from "react-hot-toast";
 
 export function useUploadBanner() {
-  const { mutate: uploadBanner, isPending: isBannering } = useMutation({
+  const {
+    mutate: uploadBanner,
+    data,
+    isPending: isBannering,
+  } = useMutation({
     //@ts-ignore
     mutationFn: (banner) => uploadBannerApi(banner),
-    onSuccess: () => {
-      toast.success("New Banner successfully updated");
-    },
+
     onError: (err) => toast.error(err.message),
   });
 
-  return { isBannering, uploadBanner };
+  return { isBannering, data, uploadBanner };
 }

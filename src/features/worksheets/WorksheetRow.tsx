@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 import Table from "../../ui/Table";
 import { formatCurrency } from "../../utils/helpers";
@@ -22,7 +21,7 @@ const Worksheet = styled.div`
   font-weight: 600;
   color: var(--color-grey-600);
 `;
-
+//@ts-ignore
 const Price = styled.div`
   font-weight: 600;
 `;

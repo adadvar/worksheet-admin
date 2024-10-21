@@ -2,10 +2,10 @@ import { useState, useMemo } from "react";
 import { useCategories } from "./useCategories";
 import { Category } from "../../services/apiCategory";
 
-interface CategoryOption {
-  value: number;
-  label: string;
-}
+// interface CategoryOption {
+//   value: number;
+//   label: string;
+// }
 
 const useCategoryOptions = () => {
   const { categories } = useCategories();

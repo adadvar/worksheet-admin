@@ -1,9 +1,10 @@
 // import { useLocalStorageState } from "../hooks/useLocalStorageState";
-import { axiosInstance, axiosInstanceWithAuth } from "./axiosInstance";
+
+import { Axios, AxiosAuth } from "./axiosInstance";
 
 export async function login(params: any) {
   try {
-    const res = await axiosInstance.post("/login", params);
+    const res = await Axios.post("/login", params);
     return res.data;
   } catch (err: any) {
     console.log(err);
@@ -13,7 +14,7 @@ export async function login(params: any) {
 
 export async function logout() {
   try {
-    await axiosInstanceWithAuth.post("/logout");
+    await AxiosAuth.post("/logout");
   } catch (err: any) {
     console.log(err);
     throw new Error("logout failed");
@@ -27,7 +28,7 @@ export async function getCurrentUser1() {
 
 export async function getCurrentUser() {
   try {
-    const res = await axiosInstanceWithAuth.get("/user/me");
+    const res = await AxiosAuth.get("/user/me");
     return res.data;
   } catch (err: any) {
     console.log(err);

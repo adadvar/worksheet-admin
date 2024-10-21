@@ -10,7 +10,7 @@ export function useUpdateWorksheet() {
     mutationFn: ({ id, newWorksheetData }) =>
       updateWorksheetApi(id, newWorksheetData),
     onSuccess: () => {
-      toast.success("New Worsheet successfully updated");
+      toast.success("کاربرگ بروزرسانی شد");
       queryClinet.invalidateQueries({ queryKey: ["worksheets"] });
     },
     onError: (err) => toast.error(err.message),
