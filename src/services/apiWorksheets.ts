@@ -66,6 +66,7 @@ export async function uploadFile(params: any) {
 
 export async function createWorksheet(worksheet: Worksheet) {
   try {
+    console.log("worksheet", worksheet);
     const res = await axiosInstanceWithAuth.post("/worksheet", worksheet);
     return res.data;
   } catch (err) {

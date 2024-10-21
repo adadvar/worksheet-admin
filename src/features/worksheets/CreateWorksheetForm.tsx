@@ -12,6 +12,7 @@ import { useUpdateWorksheet } from "./useUpdateWorksheet";
 import { useUploadBanner } from "./useUploadBanner";
 import { useUploadFile } from "./useUploadFile";
 import useCategoryOptions from "./useCategoryOptions";
+import Button from "../../ui/Button";
 
 const CreateWorksheetForm = ({
   onCloseModal,
@@ -96,7 +97,7 @@ const CreateWorksheetForm = ({
 
       <FormRow label="قیمت کاربرگ" error={errors?.price?.message}>
         <Input
-          type="text"
+          type="number"
           id="price"
           disabled={isWorking}
           {...register("price", {
@@ -142,6 +143,20 @@ const CreateWorksheetForm = ({
           options={topicOptions}
           {...register("topic_id", { required: "این فیلد ضروری است." })}
         />
+      </FormRow>
+
+      <FormRow>
+        {/* type is an HTML attribute! */}
+        <Button
+          variation="secondary"
+          type="reset"
+          onClick={() => onCloseModal?.()}
+        >
+          انصراف
+        </Button>
+        <Button disabled={isWorking}>
+          {isUpdateSession ? "ویرایش  کاربرگ" : "افزودن کاربرگ جدید"}
+        </Button>
       </FormRow>
     </Form>
   );

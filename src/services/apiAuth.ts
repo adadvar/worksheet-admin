@@ -20,12 +20,12 @@ export async function logout() {
   }
 }
 
-export async function getCurrentUser() {
+export async function getCurrentUser1() {
   const user = JSON.parse(localStorage.getItem("user") as string);
   return user;
 }
 
-export async function getCurrentUser1() {
+export async function getCurrentUser() {
   try {
     const res = await axiosInstanceWithAuth.get("/user/me");
     return res.data;

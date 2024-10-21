@@ -6,16 +6,15 @@ export function useUser() {
     queryKey: ["user"],
     queryFn: getCurrentUser,
   });
-
   const isAuthenticated = !!user;
   const isAdmin =
-    user?.user?.roles?.some((role: any) => role.name === "admin") || false;
+    user?.roles?.some((role: any) => role.name === "admin") || false;
   const isTeacher =
-    user?.user?.roles?.some((role: any) => role.name === "teacher") || false;
+    user?.roles?.some((role: any) => role.name === "teacher") || false;
   const isStudent =
-    user?.user?.roles?.some((role: any) => role.name === "student") || false;
+    user?.roles?.some((role: any) => role.name === "student") || false;
   const isParent =
-    user?.user?.roles?.some((role: any) => role.name === "parent") || false;
+    user?.roles?.some((role: any) => role.name === "parent") || false;
 
   return {
     isLoading,
