@@ -51,13 +51,9 @@ const WorksheetRow = ({
     banner_link,
     name,
     price,
-    category: {
-      name: topic,
-      parents: {
-        name: subject,
-        parents: { name: grade },
-      },
-    },
+    grade: { name: grade },
+    subject: { name: subject },
+    topic: { name: topic },
     age,
   },
 }: any) => {

@@ -17,13 +17,13 @@ const WorksheetTable = () => {
     <Menus>
       <Table columns="1fr 2fr 1fr 1fr 1fr 1fr 1fr 3.2rem">
         <Table.Header>
-          <div>image</div>
-          <div>name</div>
-          <div>grade</div>
-          <div>subject</div>
-          <div>topic</div>
-          <div>price</div>
-          <div>date</div>
+          <div>عکس</div>
+          <div>نام</div>
+          <div>پایه</div>
+          <div>درس</div>
+          <div>موضوع</div>
+          <div>قیمت</div>
+          <div>تاریخ</div>
           <div></div>
         </Table.Header>
 

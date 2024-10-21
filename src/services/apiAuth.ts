@@ -1,5 +1,5 @@
 // import { useLocalStorageState } from "../hooks/useLocalStorageState";
-import axiosInstance from "./axiosInstance";
+import { axiosInstance, axiosInstanceWithAuth } from "./axiosInstance";
 
 export async function login(params: any) {
   try {
@@ -13,19 +13,7 @@ export async function login(params: any) {
 
 export async function logout() {
   try {
-    const user = JSON.parse(localStorage.getItem("user") as string);
-    const token = user.token;
-    if (!token) throw new Error("Token not found");
-
-    await axiosInstance.post(
-      "/logout",
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    await axiosInstanceWithAuth.post("/logout");
   } catch (err: any) {
     console.log(err);
     throw new Error("logout failed");
@@ -39,7 +27,7 @@ export async function getCurrentUser() {
 
 export async function getCurrentUser1() {
   try {
-    const res = await axiosInstance.get("/user/me");
+    const res = await axiosInstanceWithAuth.get("/user/me");
     return res.data;
   } catch (err: any) {
     console.log(err);
