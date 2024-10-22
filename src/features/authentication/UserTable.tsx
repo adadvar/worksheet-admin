@@ -15,12 +15,13 @@ const UserTable = () => {
 
   return (
     <Menus>
-      <Table columns="1fr 1fr 2fr 1fr">
+      <Table columns="1fr 1fr 2fr 1fr 3.2rem">
         <Table.Header>
           <div>نام</div>
           <div>موبایل</div>
           <div>ایمیل</div>
           <div>نقش</div>
+          <div></div>
         </Table.Header>
         <Table.Body
           data={users}
