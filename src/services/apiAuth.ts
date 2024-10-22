@@ -35,3 +35,13 @@ export async function getCurrentUser() {
     throw new Error("User could not be loaded");
   }
 }
+
+export async function getUsers() {
+  try {
+    const res = await AxiosAuth.get("/user/list");
+    return res.data;
+  } catch (err: any) {
+    console.log(err);
+    throw new Error("Users could not be loaded");
+  }
+}
