@@ -27,13 +27,17 @@ const CreateWorksheetForm = ({
   const { isBannering, uploadBanner } = useUploadBanner();
   const { isFiling, uploadFile } = useUploadFile();
 
-  const isWorking = isCreating || isUpdating || isBannering || isFiling;
+  const isWorking = isCreating || isUpdating;
   //@ts-ignore
   const { id: updateId, ...updateValues } = worksheetToUpdate;
   const isUpdateSession = Boolean(updateId);
   const { register, handleSubmit, reset, formState, setValue, watch } =
     useForm<Worksheet>({ defaultValues: isUpdateSession ? updateValues : {} });
-
+  const [banner, setBanner] = useState<File | null>(null);
+  const [file, setFile] = useState<File | null>(null);
+  const [bannerUrl, setBannerUrl] = useState<string | null>(null);
+  const [fileUrl, setFileUrl] = useState<string | null>(null);
+  console.log("updateValues", updateValues);
   const { errors } = formState;
 
   const {
@@ -43,6 +47,20 @@ const CreateWorksheetForm = ({
     setSelectedGradeId,
     setSelectedSubjectId,
   } = useCategoryOptions();
+
+  useEffect(() => {
+    if (isUpdateSession) {
+      setSelectedGradeId(updateValues.grade_id);
+      setSelectedSubjectId(updateValues.subject_id);
+
+      setValue("grade_id", updateValues.grade_id);
+      setValue("subject_id", updateValues.subject_id);
+      setValue("topic_id", updateValues.topic_id);
+
+      setBanner(null);
+      setFile(null);
+    }
+  }, [isUpdateSession, updateValues]);
 
   const handleGradeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const gradeId = parseInt(e.target.value, 10);
@@ -59,9 +77,6 @@ const CreateWorksheetForm = ({
     setValue("topic_id", null);
   };
 
-  const [banner, setBanner] = useState<File | null>(null);
-  const [file, setFile] = useState<File | null>(null);
-
   const handleBannerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       setBanner(e.target.files[0]);
@@ -73,59 +88,53 @@ const CreateWorksheetForm = ({
       setFile(e.target.files[0]);
     }
   };
-  const onSubmit: SubmitHandler<Worksheet> = async (data) => {
-    let bannerUrl: any = null;
-    let fileUrl: any = null;
 
+  useEffect(() => {
     if (banner) {
       const formData = new FormData();
       formData.append("banner", banner);
       //@ts-ignore
       uploadBanner(formData, {
         onSuccess: (res) => {
-          bannerUrl = res.banner;
-          if (file) {
-            const formData = new FormData();
-            formData.append("file", file);
-            //@ts-ignore
-            uploadFile(formData, {
-              onSuccess: (res) => {
-                fileUrl = res.file;
-
-                const finalData = {
-                  ...data,
-                  banner: bannerUrl,
-                  file: fileUrl,
-                };
-
-                if (isUpdateSession)
-                  updateWorksheet(
-                    //@ts-ignore
-                    { newWorksheetData: finalData, id: updateId },
-                    {
-                      onSuccess: () => {
-                        reset();
-                        onCloseModal?.();
-                      },
-                    }
-                  );
-                else
-                  createWorksheet(finalData, {
-                    onSuccess: () => {
-                      reset();
-                      onCloseModal?.();
-                    },
-                  });
-              },
-            });
-          }
+          setBannerUrl(res.banner);
         },
       });
     }
-    if (!banner && !file && isUpdateSession)
+  }, [banner]);
+
+  useEffect(() => {
+    if (file) {
+      const formData = new FormData();
+      formData.append("file", file);
+      uploadFile(formData, {
+        onSuccess: (res) => {
+          setFileUrl(res.file);
+        },
+      });
+    }
+  }, [file]);
+
+  const onSubmit: SubmitHandler<Worksheet> = async (data) => {
+    const { name, price, description, grade_id, subject_id, topic_id } = data;
+
+    const finalData = {
+      name,
+      price,
+      description,
+      grade_id,
+      subject_id,
+      topic_id,
+    };
+
+    //@ts-ignore
+    if (bannerUrl) finalData.banner = bannerUrl;
+    //@ts-ignore
+    if (fileUrl) finalData.file = fileUrl;
+
+    if (isUpdateSession)
       updateWorksheet(
         //@ts-ignore
-        { newWorksheetData: data, id: updateId },
+        { newWorksheetData: finalData, id: updateId },
         {
           onSuccess: () => {
             reset();
@@ -133,25 +142,20 @@ const CreateWorksheetForm = ({
           },
         }
       );
+    else {
+      //@ts-ignore
+      createWorksheet(finalData, {
+        onSuccess: () => {
+          reset();
+          onCloseModal?.();
+        },
+      });
+    }
   };
 
   const onError = (err: FieldErrors<Worksheet>) => {
     console.log(err);
   };
-
-  useEffect(() => {
-    if (isUpdateSession) {
-      setSelectedGradeId(updateValues.grade_id);
-      setSelectedSubjectId(updateValues.subject_id);
-
-      setValue("grade_id", updateValues.grade_id);
-      setValue("subject_id", updateValues.subject_id);
-      setValue("topic_id", updateValues.topic_id);
-
-      setBanner(null);
-      setFile(null);
-    }
-  }, [isUpdateSession, updateValues, setValue]);
 
   return (
     <Form
@@ -203,7 +207,6 @@ const CreateWorksheetForm = ({
           type="white"
           disabled={isWorking}
           options={subjectOptions}
-          value={updateValues.subject_id}
           {...register("subject_id", { required: "این فیلد ضروری است." })}
           onChange={handleSubjectChange}
         />
@@ -214,7 +217,6 @@ const CreateWorksheetForm = ({
           type="white"
           disabled={isWorking}
           options={topicOptions}
-          value={updateValues.topic_id}
           {...register("topic_id", { required: "این فیلد ضروری است." })}
         />
       </FormRow>
