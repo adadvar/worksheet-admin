@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm, SubmitHandler, FieldErrors } from "react-hook-form";
 import { Worksheet } from "../../services/apiWorksheets";
 import Form from "../../ui/Form";
@@ -24,15 +24,14 @@ const CreateWorksheetForm = ({
 }) => {
   const { isCreating, createWorksheet } = useCreateWorksheet();
   const { isUpdating, updateWorksheet } = useUpdateWorksheet();
-  const { isBannering, data: bannerData, uploadBanner } = useUploadBanner();
-  const { isFiling, data: fileData, uploadFile } = useUploadFile();
+  const { isBannering, uploadBanner } = useUploadBanner();
+  const { isFiling, uploadFile } = useUploadFile();
 
   const isWorking = isCreating || isUpdating || isBannering || isFiling;
   //@ts-ignore
   const { id: updateId, ...updateValues } = worksheetToUpdate;
   const isUpdateSession = Boolean(updateId);
-
-  const { register, handleSubmit, reset, formState, setValue } =
+  const { register, handleSubmit, reset, formState, setValue, watch } =
     useForm<Worksheet>({ defaultValues: isUpdateSession ? updateValues : {} });
 
   const { errors } = formState;
@@ -81,12 +80,14 @@ const CreateWorksheetForm = ({
     if (banner) {
       const formData = new FormData();
       formData.append("banner", banner);
+      //@ts-ignore
       uploadBanner(formData, {
         onSuccess: (res) => {
           bannerUrl = res.banner;
           if (file) {
             const formData = new FormData();
             formData.append("file", file);
+            //@ts-ignore
             uploadFile(formData, {
               onSuccess: (res) => {
                 fileUrl = res.file;
@@ -121,11 +122,36 @@ const CreateWorksheetForm = ({
         },
       });
     }
+    if (!banner && !file && isUpdateSession)
+      updateWorksheet(
+        //@ts-ignore
+        { newWorksheetData: data, id: updateId },
+        {
+          onSuccess: () => {
+            reset();
+            onCloseModal?.();
+          },
+        }
+      );
   };
 
   const onError = (err: FieldErrors<Worksheet>) => {
     console.log(err);
   };
+
+  useEffect(() => {
+    if (isUpdateSession) {
+      setSelectedGradeId(updateValues.grade_id);
+      setSelectedSubjectId(updateValues.subject_id);
+
+      setValue("grade_id", updateValues.grade_id);
+      setValue("subject_id", updateValues.subject_id);
+      setValue("topic_id", updateValues.topic_id);
+
+      setBanner(null);
+      setFile(null);
+    }
+  }, [isUpdateSession, updateValues, setValue]);
 
   return (
     <Form
@@ -177,6 +203,7 @@ const CreateWorksheetForm = ({
           type="white"
           disabled={isWorking}
           options={subjectOptions}
+          value={updateValues.subject_id}
           {...register("subject_id", { required: "این فیلد ضروری است." })}
           onChange={handleSubjectChange}
         />
@@ -187,6 +214,7 @@ const CreateWorksheetForm = ({
           type="white"
           disabled={isWorking}
           options={topicOptions}
+          value={updateValues.topic_id}
           {...register("topic_id", { required: "این فیلد ضروری است." })}
         />
       </FormRow>

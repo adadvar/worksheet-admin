@@ -1,3 +1,4 @@
+import { Category } from "./apiCategory";
 import { Axios, AxiosAuth, AxiosFile } from "./axiosInstance";
 
 export interface Worksheet {
@@ -6,6 +7,9 @@ export interface Worksheet {
   grade_id: number | null;
   subject_id: number | null;
   topic_id: number | null;
+  grade: Category;
+  subject: Category;
+  topic: Category;
   banner_link: string;
   category_id: number;
   description: string;
@@ -13,7 +17,7 @@ export interface Worksheet {
   file_link: string;
   id: number;
   name: string;
-  price: string;
+  price: number;
   publish_at: null;
   slug: string;
   updated_at: Date;

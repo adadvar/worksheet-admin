@@ -6,6 +6,7 @@ import Menus from "../../ui/Menus";
 import { HiEye, HiTrash } from "react-icons/hi2";
 import ConfirmDelete from "../../ui/ConfirmDelete";
 import CreateWorksheetForm from "./CreateWorksheetForm";
+import { Worksheet as WorksheetModel } from "../../services/apiWorksheets";
 
 const Img = styled.img`
   display: block;
@@ -44,8 +45,8 @@ const Stacked = styled.div`
 const Amount = styled.div`
   font-weight: 500;
 `;
-const WorksheetRow = ({
-  worksheet: {
+const WorksheetRow = ({ worksheet }: { worksheet: WorksheetModel }) => {
+  const {
     id: worksheetId,
     banner_link,
     name,
@@ -54,8 +55,7 @@ const WorksheetRow = ({
     subject: { name: subject },
     topic: { name: topic },
     age,
-  },
-}: any) => {
+  } = worksheet;
   return (
     <Table.Row>
       <Img src={banner_link} />
@@ -70,31 +70,25 @@ const WorksheetRow = ({
           <Menus.Toggle id={worksheetId} />
           <Menus.List id={worksheetId}>
             <Modal.Open opens="detail">
-              <Menus.Button icon={<HiEye />}>Detail</Menus.Button>
+              <Menus.Button icon={<HiEye />}>ویرایش</Menus.Button>
             </Modal.Open>
             <Modal.Open opens="delete">
-              <Menus.Button icon={<HiTrash />}>Delete</Menus.Button>
+              <Menus.Button icon={<HiTrash />}>حذف</Menus.Button>
             </Modal.Open>
           </Menus.List>
         </Menus.Menu>
-        <Modal.Window name="delete">
-          <ConfirmDelete
-            resourceName="booking"
-            // onConfirm={() => deleteBooking(bookingId)}
-            onConfirm={() => {}}
-            disabled={false}
-          />
-        </Modal.Window>
-        <Modal.Window name="delete">
-          <ConfirmDelete
-            resourceName="booking"
-            // onConfirm={() => deleteBooking(bookingId)}
-            onConfirm={() => {}}
-            disabled={false}
-          />
-        </Modal.Window>
+
         <Modal.Window name="detail">
-          <CreateWorksheetForm />
+          <CreateWorksheetForm worksheetToUpdate={worksheet} />
+        </Modal.Window>
+
+        <Modal.Window name="delete">
+          <ConfirmDelete
+            resourceName="booking"
+            // onConfirm={() => deleteBooking(bookingId)}
+            onConfirm={() => {}}
+            disabled={false}
+          />
         </Modal.Window>
       </Modal>
     </Table.Row>
