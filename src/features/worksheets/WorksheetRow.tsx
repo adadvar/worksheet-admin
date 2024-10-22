@@ -5,8 +5,9 @@ import Modal from "../../ui/Modal";
 import Menus from "../../ui/Menus";
 import { HiEye, HiTrash } from "react-icons/hi2";
 import ConfirmDelete from "../../ui/ConfirmDelete";
-import CreateWorksheetForm from "./CreateWorksheetForm";
 import { Worksheet as WorksheetModel } from "../../services/apiWorksheets";
+import UpdateWorksheetForm from "./UpdateWorksheetForm";
+import { useDeleteWorksheet } from "./useDeleteWorksheet";
 
 const Img = styled.img`
   display: block;
@@ -56,6 +57,7 @@ const WorksheetRow = ({ worksheet }: { worksheet: WorksheetModel }) => {
     topic: { name: topic },
     age,
   } = worksheet;
+  const { deleteWorksheet, isDeleting } = useDeleteWorksheet();
   return (
     <Table.Row>
       <Img src={banner_link} />
@@ -79,15 +81,14 @@ const WorksheetRow = ({ worksheet }: { worksheet: WorksheetModel }) => {
         </Menus.Menu>
 
         <Modal.Window name="detail">
-          <CreateWorksheetForm worksheetToUpdate={worksheet} />
+          <UpdateWorksheetForm worksheetToUpdate={worksheet} />
         </Modal.Window>
 
         <Modal.Window name="delete">
           <ConfirmDelete
-            resourceName="booking"
-            // onConfirm={() => deleteBooking(bookingId)}
-            onConfirm={() => {}}
-            disabled={false}
+            resourceName="کاربرگ"
+            onConfirm={() => deleteWorksheet(worksheetId)}
+            disabled={isDeleting}
           />
         </Modal.Window>
       </Modal>

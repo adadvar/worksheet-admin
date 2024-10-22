@@ -82,3 +82,13 @@ export async function updateWorksheet(id: number, params: any) {
     throw new Error("کاربرگ بروزرسانی نشد");
   }
 }
+
+export async function deleteWorksheet(id: number) {
+  try {
+    const res = await AxiosAuth.delete(`/worksheet/${id}`);
+    return res.data;
+  } catch (err: any) {
+    console.error(err.message);
+    throw new Error("کاربرگ حذف نشد");
+  }
+}

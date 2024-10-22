@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useForm, SubmitHandler, FieldErrors } from "react-hook-form";
 import { Worksheet } from "../../services/apiWorksheets";
 import Form from "../../ui/Form";
@@ -7,6 +7,7 @@ import Input from "../../ui/Input";
 import Select from "../../ui/Select";
 import Textarea from "../../ui/Textarea";
 import { useCreateWorksheet } from "./useCreateWorksheet";
+import { useUpdateWorksheet } from "./useUpdateWorksheet";
 
 import useCategoryOptions from "./useCategoryOptions";
 import Button from "../../ui/Button";
@@ -14,24 +15,63 @@ import FileInput from "../../ui/FileInput";
 import { useUploadBanner } from "./useUploadBanner";
 import { useUploadFile } from "./useUploadFile";
 
-const CreateWorksheetForm = ({
+const UpdateWorksheetForm = ({
   onCloseModal,
+  worksheetToUpdate,
 }: {
   onCloseModal?: () => void;
+  worksheetToUpdate: Worksheet;
 }) => {
-  const { isCreating, createWorksheet } = useCreateWorksheet();
+  const { isCreating } = useCreateWorksheet();
+  const { isUpdating, updateWorksheet } = useUpdateWorksheet();
   const { uploadBanner } = useUploadBanner();
   const { uploadFile } = useUploadFile();
 
-  const isWorking = isCreating;
+  const isWorking = isCreating || isUpdating;
   //@ts-ignore
+  const { id: updateId, ...updateValues } = worksheetToUpdate;
+  const {
+    name,
+    price,
+    description,
+    grade_id,
+    subject_id,
+    topic_id,
+    banner: bannerDef,
+    file: fileDef,
+  } = updateValues;
   const { register, handleSubmit, reset, formState, setValue } =
-    useForm<Worksheet>();
+    useForm<Worksheet>({
+      defaultValues: {
+        name,
+        price,
+        description,
+        grade_id,
+        subject_id,
+        topic_id,
+        banner: bannerDef,
+        file: fileDef,
+      },
+    });
   const [banner, setBanner] = useState<File | null>(null);
   const [file, setFile] = useState<File | null>(null);
   const [bannerUrl, setBannerUrl] = useState<string | null>(null);
   const [fileUrl, setFileUrl] = useState<string | null>(null);
+  console.log("updateValues", updateValues);
   const { errors } = formState;
+  const memoizedUpdateValues = useMemo(
+    () => updateValues,
+    [
+      name,
+      price,
+      description,
+      grade_id,
+      subject_id,
+      topic_id,
+      bannerDef,
+      fileDef,
+    ]
+  );
 
   const {
     gradeOptions,
@@ -40,6 +80,18 @@ const CreateWorksheetForm = ({
     setSelectedGradeId,
     setSelectedSubjectId,
   } = useCategoryOptions();
+
+  useEffect(() => {
+    setSelectedGradeId(updateValues.grade_id);
+    setSelectedSubjectId(updateValues.subject_id);
+
+    setValue("grade_id", updateValues.grade_id);
+    setValue("subject_id", updateValues.subject_id);
+    setValue("topic_id", updateValues.topic_id);
+
+    setBanner(null);
+    setFile(null);
+  }, [memoizedUpdateValues, setValue]);
 
   const handleGradeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const gradeId = parseInt(e.target.value, 10);
@@ -111,13 +163,16 @@ const CreateWorksheetForm = ({
     //@ts-ignore
     if (fileUrl) finalData.file = fileUrl;
 
-    //@ts-ignore
-    createWorksheet(finalData, {
-      onSuccess: () => {
-        reset();
-        onCloseModal?.();
-      },
-    });
+    updateWorksheet(
+      //@ts-ignore
+      { newWorksheetData: finalData, id: updateId },
+      {
+        onSuccess: () => {
+          reset();
+          onCloseModal?.();
+        },
+      }
+    );
   };
 
   const onError = (err: FieldErrors<Worksheet>) => {
@@ -164,7 +219,8 @@ const CreateWorksheetForm = ({
           type="white"
           disabled={isWorking}
           options={gradeOptions}
-          {...register("grade_id", { required: "این فیلد ضروری است." })}
+          defaultValue={updateValues.grade_id?.toString()}
+          {...register("grade_id", { required: false })}
           onChange={handleGradeChange}
         />
       </FormRow>
@@ -174,7 +230,8 @@ const CreateWorksheetForm = ({
           type="white"
           disabled={isWorking}
           options={subjectOptions}
-          {...register("subject_id", { required: "این فیلد ضروری است." })}
+          defaultValue={updateValues.subject_id?.toString()}
+          {...register("subject_id", { required: false })}
           onChange={handleSubjectChange}
         />
       </FormRow>
@@ -184,7 +241,8 @@ const CreateWorksheetForm = ({
           type="white"
           disabled={isWorking}
           options={topicOptions}
-          {...register("topic_id", { required: "این فیلد ضروری است." })}
+          defaultValue={updateValues.topic_id?.toString()}
+          {...register("topic_id", { required: false })}
         />
       </FormRow>
 
@@ -194,7 +252,7 @@ const CreateWorksheetForm = ({
           accept="image/*"
           type="file"
           {...register("banner", {
-            required: "این فیلد ضروری است.",
+            required: false,
           })}
           onChange={handleBannerChange}
         />
@@ -206,7 +264,7 @@ const CreateWorksheetForm = ({
           accept="application/pdf"
           type="file"
           {...register("file", {
-            required: "این فیلد ضروری است.",
+            required: false,
           })}
           onChange={handleFileChange}
         />
@@ -222,10 +280,10 @@ const CreateWorksheetForm = ({
         >
           انصراف
         </Button>
-        <Button disabled={isWorking}>{"افزودن کاربرگ جدید"}</Button>
+        <Button disabled={isWorking}>{"ویرایش  کاربرگ"}</Button>
       </FormRow>
     </Form>
   );
 };
 
-export default CreateWorksheetForm;
+export default UpdateWorksheetForm;
