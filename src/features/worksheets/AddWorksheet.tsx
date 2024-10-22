@@ -4,16 +4,16 @@ import CreateWorksheetForm from "./CreateWorksheetForm";
 
 const AddWorksheet = () => {
   return (
-    <div>
+    <>
       <Modal>
         <Modal.Open opens="worksheet-form">
-          <Button>Add new worksheet</Button>
+          <Button>افزودن کاربرگ</Button>
         </Modal.Open>
         <Modal.Window name="worksheet-form">
           <CreateWorksheetForm />
         </Modal.Window>
       </Modal>
-    </div>
+    </>
   );
 };
 

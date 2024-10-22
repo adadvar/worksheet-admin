@@ -19,6 +19,8 @@ const StyledNavLink = styled(NavLink)`
   &:visited {
     display: flex;
     align-items: center;
+    justify-content: end;
+    flex-direction: row-reverse;
     gap: 1.2rem;
 
     color: var(--color-grey-600);
@@ -60,31 +62,31 @@ const MainNav = () => {
         <li>
           <StyledNavLink to="/dashboard">
             <HiOutlineHome />
-            <span>Home</span>
+            <span>داشبورد</span>
           </StyledNavLink>
         </li>
         <li>
           <StyledNavLink to="/worksheets">
             <HiOutlineClipboardDocumentList />
-            <span>Worksheets</span>
+            <span>کاربرگ‌ها</span>
           </StyledNavLink>
         </li>
         <li>
           <StyledNavLink to="/orders">
             <HiOutlineBanknotes />
-            <span>Orders</span>
+            <span>سفارش‌ها</span>
           </StyledNavLink>
         </li>
         <li>
           <StyledNavLink to="/users">
             <HiOutlineUsers />
-            <span>Users</span>
+            <span>کاربرها</span>
           </StyledNavLink>
         </li>
         <li>
           <StyledNavLink to="/settings">
             <HiOutlineCog6Tooth />
-            <span>Settings</span>
+            <span>تنظیمات </span>
           </StyledNavLink>
         </li>
       </NavList>
