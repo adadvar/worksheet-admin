@@ -1,3 +1,4 @@
+import { Worksheet } from "../../services/apiWorksheets";
 import Empty from "../../ui/Empty";
 import Menus from "../../ui/Menus";
 import Pagination from "../../ui/Pagination";
@@ -29,7 +30,7 @@ const WorksheetTable = () => {
 
         <Table.Body
           data={worksheets}
-          render={(worksheet: any) => (
+          render={(worksheet: Worksheet) => (
             <WorksheetRow key={worksheet.id} worksheet={worksheet} />
           )}
         />

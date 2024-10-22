@@ -35,10 +35,13 @@ export async function getCurrentUser() {
     throw new Error("User could not be loaded");
   }
 }
+interface Props {
+  page?: number;
+}
 
-export async function getUsers() {
+export async function getUsers({ page = 1 }: Props) {
   try {
-    const res = await AxiosAuth.get("/user/list");
+    const res = await AxiosAuth.get("/user/list", { params: { page } });
     return res.data;
   } catch (err: any) {
     console.log(err);
