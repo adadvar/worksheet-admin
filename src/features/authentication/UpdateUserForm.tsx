@@ -35,12 +35,14 @@ const UpdateUserForm = ({
   const { errors } = formState;
 
   const onSubmit: SubmitHandler<User> = async (data) => {
-    const { name, mobile, email } = data;
+    //@ts-ignore
+    const { name, mobile, email, role_id } = data;
 
     const finalData = {
       name,
       mobile,
       email,
+      role_id,
     };
 
     updateUser(
@@ -84,10 +86,12 @@ const UpdateUserForm = ({
 
       <FormRow label="نقش">
         <Select
-          id="role "
+          id="role_id"
           type="white"
           disabled={isWorking}
           defaultValue={roleId}
+          //@ts-ignore
+          {...register("role_id", { required: false })}
           options={[
             { value: "1", label: "ادمین" },
             { value: "2", label: "معلم" },
