@@ -8,14 +8,14 @@ import UpdateUserForm from "./UpdateUserForm";
 import { useDeleteUser } from "./useDelete";
 import { User as UserProp } from "../../services/apiAuth";
 
-const Img = styled.img`
-  display: block;
-  width: 6.4rem;
-  aspect-ratio: 3 / 2;
-  object-fit: cover;
-  object-position: center;
-  transform: scale(1.5) translateX(-7px);
-`;
+// const Img = styled.img`
+//   display: block;
+//   width: 6.4rem;
+//   aspect-ratio: 3 / 2;
+//   object-fit: cover;
+//   object-position: center;
+//   transform: scale(1.5) translateX(-7px);
+// `;
 
 const User = styled.div`
   font-size: 1.6rem;
@@ -42,9 +42,9 @@ const Stacked = styled.div`
   }
 `;
 
-const Amount = styled.div`
-  font-weight: 500;
-`;
+// const Amount = styled.div`
+//   font-weight: 500;
+// `;
 const UserRow = ({ user }: { user: UserProp }) => {
   const {
     id: userId,
