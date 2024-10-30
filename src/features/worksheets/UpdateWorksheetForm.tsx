@@ -57,7 +57,7 @@ const UpdateWorksheetForm = ({
   const [file, setFile] = useState<File | null>(null);
   const [bannerUrl, setBannerUrl] = useState<string | null>(null);
   const [fileUrl, setFileUrl] = useState<string | null>(null);
-  console.log("updateValues", updateValues);
+
   const { errors } = formState;
   const memoizedUpdateValues = useMemo(
     () => updateValues,

@@ -75,7 +75,7 @@ export async function getUsers({ page = 1 }: Props) {
     throw new Error("Users could not be loaded");
   }
 }
-
+//TODO: for updating users to admin mode , use confirmation dialog
 export async function updateUser(id: number, params: any) {
   try {
     const res = await AxiosAuth.put(`/user/${id}`, params);
