@@ -9,7 +9,7 @@ export function useLogout() {
   const { mutate: logout, isPending: isLoading } = useMutation({
     mutationFn: logoutApi,
     onSuccess: () => {
-      localStorage.removeItem("user");
+      localStorage.removeItem("user_admin");
       queryClient.removeQueries();
       navigate("/login", { replace: true });
     },

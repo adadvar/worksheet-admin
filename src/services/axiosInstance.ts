@@ -21,7 +21,7 @@ const AxiosAuth = axios.create({
 
 AxiosAuth.interceptors.request.use(
   (config) => {
-    const user = JSON.parse(localStorage.getItem("user") as string);
+    const user = JSON.parse(localStorage.getItem("user_admin") as string);
     const token = user.token;
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -35,7 +35,7 @@ AxiosAuth.interceptors.request.use(
 
 AxiosFile.interceptors.request.use(
   (config) => {
-    const user = JSON.parse(localStorage.getItem("user") as string);
+    const user = JSON.parse(localStorage.getItem("user_admin") as string);
     const token = user.token;
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;

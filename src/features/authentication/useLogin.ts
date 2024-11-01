@@ -16,7 +16,7 @@ export function useLogin() {
       password: string;
     }) => loginApi({ username, password }),
     onSuccess: (user) => {
-      localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem("user_admin", JSON.stringify(user));
       queryClient.setQueryData(["user"], user.user);
       navigate("/dashboard", { replace: true });
     },

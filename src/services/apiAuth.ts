@@ -49,7 +49,7 @@ export async function logout() {
 }
 
 export async function getCurrentUser1() {
-  const user = JSON.parse(localStorage.getItem("user") as string);
+  const user = JSON.parse(localStorage.getItem("user_admin") as string);
   return user;
 }
 
