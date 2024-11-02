@@ -105,7 +105,7 @@ const UpdateUserForm = ({
         {/* type is an HTML attribute! */}
         <Button
           disabled={isWorking}
-          variation="secondary"
+          $variation="secondary"
           type="reset"
           onClick={() => onCloseModal?.()}
         >
