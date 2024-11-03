@@ -7,8 +7,8 @@ export function useUpdateUser() {
   const { mutate: updateUser, isPending: isUpdating } = useMutation({
     //@ts-ignore
     mutationFn: ({ id, newUserData }) => updateUserApi(id, newUserData),
-    onSuccess: () => {
-      toast.success("کاربر بروزرسانی شد");
+    onSuccess: (data) => {
+      toast.success(data.message || "کاربر بروزرسانی شد");
       queryClinet.invalidateQueries({ queryKey: ["users"] });
     },
     onError: (err) => toast.error(err.message),

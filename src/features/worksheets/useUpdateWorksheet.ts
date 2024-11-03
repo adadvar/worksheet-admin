@@ -9,8 +9,8 @@ export function useUpdateWorksheet() {
     //@ts-ignore
     mutationFn: ({ id, newWorksheetData }) =>
       updateWorksheetApi(id, newWorksheetData),
-    onSuccess: () => {
-      toast.success("کاربرگ بروزرسانی شد");
+    onSuccess: (data) => {
+      toast.success(data.message || "کاربرگ بروزرسانی شد");
       queryClinet.invalidateQueries({ queryKey: ["worksheets"] });
     },
     onError: (err) => toast.error(err.message),

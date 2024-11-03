@@ -7,8 +7,8 @@ export function useCreateWorksheet() {
 
   const { mutate: createWorksheet, isPending: isCreating } = useMutation({
     mutationFn: createWorksheetApi,
-    onSuccess: () => {
-      toast.success("کاربرگ جدید ایجاد شد");
+    onSuccess: (data) => {
+      toast.success(data.message || "کاربرگ جدید ایجاد شد");
       queryClinet.invalidateQueries({ queryKey: ["worksheets"] });
     },
     onError: (err) => toast.error(err.message),

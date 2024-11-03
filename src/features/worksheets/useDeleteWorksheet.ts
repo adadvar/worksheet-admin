@@ -7,8 +7,8 @@ export function useDeleteWorksheet() {
 
   const { mutate: deleteWorksheet, isPending: isDeleting } = useMutation({
     mutationFn: deleteWorksheetApi,
-    onSuccess: () => {
-      toast.success("کاربرگ با موفقیت حذف شد");
+    onSuccess: (data) => {
+      toast.success(data.message || "کاربرگ با موفقیت حذف شد");
       queryClient.invalidateQueries({
         queryKey: ["worksheets"],
       });

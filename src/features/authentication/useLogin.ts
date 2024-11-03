@@ -16,13 +16,19 @@ export function useLogin() {
       password: string;
     }) => loginApi({ username, password }),
     onSuccess: (user) => {
-      localStorage.setItem("user_admin", JSON.stringify(user));
+      const { token, user: userData } = user;
+      localStorage.setItem(
+        "user_admin",
+        JSON.stringify({ token, user: userData })
+      );
       queryClient.setQueryData(["user"], user.user);
       navigate("/dashboard", { replace: true });
     },
     onError: (err) => {
       console.log("ERROR:", err);
-      toast.error("Provide username and password are incorrect");
+      // toast.error("Provide username and password are incorrect");
+      //@ts-ignore
+      toast.error(err.message || "خطایی رخ داده است");
     },
   });
 

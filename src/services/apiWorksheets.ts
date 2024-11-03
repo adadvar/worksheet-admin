@@ -67,9 +67,12 @@ export async function createWorksheet(worksheet: Worksheet) {
     const res = await AxiosAuth.post("/worksheet", worksheet);
     return res.data;
   } catch (err: any) {
-    console.log(err.message);
-
-    throw new Error("کاربرگ ایجاد نشد");
+    console.log(err);
+    if (err.response && err.response.data && err.response.data.message) {
+      throw new Error(err.response.data.message);
+    } else {
+      throw new Error("could not create worksheet");
+    }
   }
 }
 
@@ -78,8 +81,12 @@ export async function updateWorksheet(id: number, params: any) {
     const res = await AxiosAuth.put(`/worksheet/${id}`, params);
     return res.data;
   } catch (err: any) {
-    console.error(err.message);
-    throw new Error("کاربرگ بروزرسانی نشد");
+    console.log(err);
+    if (err.response && err.response.data && err.response.data.message) {
+      throw new Error(err.response.data.message);
+    } else {
+      throw new Error("could not update worksheet");
+    }
   }
 }
 
@@ -88,7 +95,11 @@ export async function deleteWorksheet(id: number) {
     const res = await AxiosAuth.delete(`/worksheet/${id}`);
     return res.data;
   } catch (err: any) {
-    console.error(err.message);
-    throw new Error("کاربرگ حذف نشد");
+    console.log(err);
+    if (err.response && err.response.data && err.response.data.message) {
+      throw new Error(err.response.data.message);
+    } else {
+      throw new Error("could not delete worksheet");
+    }
   }
 }

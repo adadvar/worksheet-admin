@@ -7,8 +7,8 @@ export function useDeleteUser() {
 
   const { mutate: deleteUser, isPending: isDeleting } = useMutation({
     mutationFn: deleteUserApi,
-    onSuccess: () => {
-      toast.success("کاربر با موفقیت حذف شد");
+    onSuccess: (data) => {
+      toast.success(data.message || "کاربر با موفقیت حذف شد");
       queryClient.invalidateQueries({
         queryKey: ["users"],
       });

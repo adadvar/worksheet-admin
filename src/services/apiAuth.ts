@@ -35,7 +35,11 @@ export async function login(params: any) {
     return res.data;
   } catch (err: any) {
     console.log(err);
-    throw new Error("login failed");
+    if (err.response && err.response.data && err.response.data.message) {
+      throw new Error(err.response.data.message);
+    } else {
+      throw new Error("login failed");
+    }
   }
 }
 
@@ -44,7 +48,11 @@ export async function logout() {
     await AxiosAuth.post("/logout");
   } catch (err: any) {
     console.log(err);
-    throw new Error("logout failed");
+    if (err.response && err.response.data && err.response.data.message) {
+      throw new Error(err.response.data.message);
+    } else {
+      throw new Error("logout failed");
+    }
   }
 }
 
@@ -55,7 +63,7 @@ export async function getCurrentUser1() {
 
 export async function getCurrentUser() {
   try {
-    const res = await AxiosAuth.get("/user/me");
+    const res = await AxiosAuth.get("/user/me", { timeout: 3000 });
     return res.data;
   } catch (err: any) {
     console.log(err);
@@ -82,7 +90,11 @@ export async function updateUser(id: number, params: any) {
     return res.data;
   } catch (err: any) {
     console.log(err);
-    throw new Error("Users could not be updated");
+    if (err.response && err.response.data && err.response.data.message) {
+      throw new Error(err.response.data.message);
+    } else {
+      throw new Error("Users could not be updated");
+    }
   }
 }
 
@@ -92,6 +104,10 @@ export async function deleteUser(id: number) {
     return res.data;
   } catch (err: any) {
     console.log(err);
-    throw new Error("Users could not be deleted");
+    if (err.response && err.response.data && err.response.data.message) {
+      throw new Error(err.response.data.message);
+    } else {
+      throw new Error("Users could not be deleted");
+    }
   }
 }
