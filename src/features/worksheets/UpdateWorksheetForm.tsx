@@ -29,7 +29,7 @@ const UpdateWorksheetForm = ({
 
   const isWorking = isCreating || isUpdating;
   //@ts-ignore
-  const { id: updateId, ...updateValues } = worksheetToUpdate;
+  const { id: updateId, slug: updateSlug, ...updateValues } = worksheetToUpdate;
   const {
     name,
     price,
@@ -165,7 +165,7 @@ const UpdateWorksheetForm = ({
 
     updateWorksheet(
       //@ts-ignore
-      { newWorksheetData: finalData, id: updateId },
+      { newWorksheetData: finalData, slug: updateSlug },
       {
         onSuccess: () => {
           reset();

@@ -76,9 +76,9 @@ export async function createWorksheet(worksheet: Worksheet) {
   }
 }
 
-export async function updateWorksheet(id: number, params: any) {
+export async function updateWorksheet(slug: string, params: any) {
   try {
-    const res = await AxiosAuth.put(`/worksheet/${id}`, params);
+    const res = await AxiosAuth.put(`/worksheet/${slug}`, params);
     return res.data;
   } catch (err: any) {
     console.log(err);
@@ -90,9 +90,9 @@ export async function updateWorksheet(id: number, params: any) {
   }
 }
 
-export async function deleteWorksheet(id: number) {
+export async function deleteWorksheet(slug: string) {
   try {
-    const res = await AxiosAuth.delete(`/worksheet/${id}`);
+    const res = await AxiosAuth.delete(`/worksheet/${slug}`);
     return res.data;
   } catch (err: any) {
     console.log(err);

@@ -51,6 +51,7 @@ const Amount = styled.div`
 const WorksheetRow = ({ worksheet }: { worksheet: WorksheetModel }) => {
   const {
     id: worksheetId,
+    slug: worksheetSlug,
     banner_link,
     name,
     price,
@@ -99,7 +100,7 @@ const WorksheetRow = ({ worksheet }: { worksheet: WorksheetModel }) => {
         <Modal.Window name="delete">
           <ConfirmDelete
             resourceName="کاربرگ"
-            onConfirm={() => deleteWorksheet(worksheetId)}
+            onConfirm={() => deleteWorksheet(worksheetSlug)}
             disabled={isDeleting}
           />
         </Modal.Window>

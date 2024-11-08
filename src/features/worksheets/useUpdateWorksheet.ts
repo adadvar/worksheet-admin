@@ -7,8 +7,8 @@ export function useUpdateWorksheet() {
 
   const { mutate: updateWorksheet, isPending: isUpdating } = useMutation({
     //@ts-ignore
-    mutationFn: ({ id, newWorksheetData }) =>
-      updateWorksheetApi(id, newWorksheetData),
+    mutationFn: ({ slug, newWorksheetData }) =>
+      updateWorksheetApi(slug, newWorksheetData),
     onSuccess: (data) => {
       toast.success(data.message || "کاربرگ بروزرسانی شد");
       queryClinet.invalidateQueries({ queryKey: ["worksheets"] });
