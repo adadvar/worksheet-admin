@@ -38,7 +38,8 @@ const UpdateWorksheetForm = ({
     subject_id,
     topic_id,
     banner: bannerDef,
-    file: fileDef,
+    file_word,
+    file_pdf,
   } = updateValues;
   const { register, handleSubmit, reset, formState, setValue } =
     useForm<Worksheet>({
@@ -50,13 +51,16 @@ const UpdateWorksheetForm = ({
         subject_id,
         topic_id,
         banner: bannerDef,
-        file: fileDef,
+        file_word,
+        file_pdf,
       },
     });
   const [banner, setBanner] = useState<File | null>(null);
-  const [file, setFile] = useState<File | null>(null);
+  const [fileWord, setFileWord] = useState<File | null>(null);
+  const [filePdf, setFilePdf] = useState<File | null>(null);
   const [bannerUrl, setBannerUrl] = useState<string | null>(null);
-  const [fileUrl, setFileUrl] = useState<string | null>(null);
+  const [fileWordUrl, setFileWordUrl] = useState<string | null>(null);
+  const [filePdfUrl, setFilePdfUrl] = useState<string | null>(null);
 
   const { errors } = formState;
   const memoizedUpdateValues = useMemo(
@@ -69,7 +73,8 @@ const UpdateWorksheetForm = ({
       subject_id,
       topic_id,
       bannerDef,
-      fileDef,
+      file_word,
+      file_pdf,
     ]
   );
 
@@ -90,7 +95,8 @@ const UpdateWorksheetForm = ({
     setValue("topic_id", updateValues.topic_id);
 
     setBanner(null);
-    setFile(null);
+    setFileWord(null);
+    setFilePdf(null);
   }, [memoizedUpdateValues, setValue]);
 
   const handleGradeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -114,9 +120,15 @@ const UpdateWorksheetForm = ({
     }
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileWordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
-      setFile(e.target.files[0]);
+      setFileWord(e.target.files[0]);
+    }
+  };
+
+  const handleFilePdfChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setFilePdf(e.target.files[0]);
     }
   };
 
@@ -134,17 +146,30 @@ const UpdateWorksheetForm = ({
   }, [banner]);
 
   useEffect(() => {
-    if (file) {
+    if (fileWord) {
       const formData = new FormData();
-      formData.append("file", file);
+      formData.append("file", fileWord);
       //@ts-ignore
       uploadFile(formData, {
         onSuccess: (res) => {
-          setFileUrl(res.file);
+          setFileWordUrl(res.file);
         },
       });
     }
-  }, [file]);
+  }, [fileWord]);
+
+  useEffect(() => {
+    if (filePdf) {
+      const formData = new FormData();
+      formData.append("file", filePdf);
+      //@ts-ignore
+      uploadFile(formData, {
+        onSuccess: (res) => {
+          setFilePdfUrl(res.file);
+        },
+      });
+    }
+  }, [filePdf]);
 
   const onSubmit: SubmitHandler<Worksheet> = async (data) => {
     const { name, price, description, grade_id, subject_id, topic_id } = data;
@@ -161,7 +186,9 @@ const UpdateWorksheetForm = ({
     //@ts-ignore
     if (bannerUrl) finalData.banner = bannerUrl;
     //@ts-ignore
-    if (fileUrl) finalData.file = fileUrl;
+    if (fileWordUrl) finalData.file_word = fileWordUrl;
+    //@ts-ignore
+    if (filePdfUrl) finalData.file_pdf = filePdfUrl;
 
     updateWorksheet(
       //@ts-ignore
@@ -258,15 +285,27 @@ const UpdateWorksheetForm = ({
         />
       </FormRow>
 
-      <FormRow label="فایل">
+      <FormRow label="فایل pdf">
         <FileInput
-          id="file"
+          id="file_word"
           accept="application/pdf"
-          type="file"
-          {...register("file", {
+          type="file_word"
+          {...register("file_word", {
             required: false,
           })}
-          onChange={handleFileChange}
+          onChange={handleFilePdfChange}
+        />
+      </FormRow>
+
+      <FormRow label="فایل word">
+        <FileInput
+          id="file_word"
+          accept="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+          type="file_word"
+          {...register("file_word", {
+            required: false,
+          })}
+          onChange={handleFileWordChange}
         />
       </FormRow>
 
