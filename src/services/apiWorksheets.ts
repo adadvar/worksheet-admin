@@ -13,8 +13,8 @@ export interface Worksheet {
   banner_link: string;
   category_id: number;
   description: string;
-  file: string;
-  file_link: string;
+  file_pdf: string;
+  file_word: string;
   id: number;
   name: string;
   price: number;
