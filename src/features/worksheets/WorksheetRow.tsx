@@ -60,12 +60,12 @@ const WorksheetRow = ({ worksheet }: { worksheet: WorksheetModel }) => {
     grade: { name: grade },
     subject: { name: subject },
     topic: { name: topic },
-    file_link: pdf_link,
+    // file_link: pdf_link,
     age,
   } = worksheet;
   const { deleteWorksheet, isDeleting } = useDeleteWorksheet();
-  const { downloadPdf, isDownloading: isDownloadingPdf } = useDownloadPdf();
-  const { downloadWord, isDownloading: isDownloadingWord } = useDownloadWord();
+  const { downloadPdf } = useDownloadPdf();
+  const { downloadWord } = useDownloadWord();
   return (
     <Table.Row>
       <Modal>
