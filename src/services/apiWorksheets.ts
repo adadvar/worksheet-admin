@@ -103,3 +103,11 @@ export async function deleteWorksheet(slug: string) {
     }
   }
 }
+
+export async function downloadPdf(slug: string) {
+  await AxiosAuth.get(`/worksheet/${slug}/download-pdf`);
+}
+
+export async function downloadWord(slug: string) {
+  await AxiosAuth.get(`/worksheet/${slug}/download-word`);
+}

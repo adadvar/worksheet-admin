@@ -9,6 +9,8 @@ import { Worksheet as WorksheetModel } from "../../services/apiWorksheets";
 import UpdateWorksheetForm from "./UpdateWorksheetForm";
 import { useDeleteWorksheet } from "./useDeleteWorksheet";
 import BannerPreview from "./BannerPreview";
+import { useDownloadPdf } from "./useDownloadPdf";
+import { useDownloadWord } from "./useDownloadWord";
 
 const Img = styled.img`
   display: block;
@@ -62,6 +64,8 @@ const WorksheetRow = ({ worksheet }: { worksheet: WorksheetModel }) => {
     age,
   } = worksheet;
   const { deleteWorksheet, isDeleting } = useDeleteWorksheet();
+  const { downloadPdf, isDownloading: isDownloadingPdf } = useDownloadPdf();
+  const { downloadWord, isDownloading: isDownloadingWord } = useDownloadWord();
   return (
     <Table.Row>
       <Modal>
@@ -77,9 +81,18 @@ const WorksheetRow = ({ worksheet }: { worksheet: WorksheetModel }) => {
         <Menus.Menu>
           <Menus.Toggle id={worksheetId} />
           <Menus.List id={worksheetId}>
-            <a href={pdf_link} rel="noopener noreferrer">
-              <Menus.Button icon={<HiDocumentText />}>pdf دانلود</Menus.Button>
-            </a>
+            <Menus.Button
+              onClick={() => downloadPdf(worksheetSlug)}
+              icon={<HiDocumentText />}
+            >
+              pdf دانلود
+            </Menus.Button>
+            <Menus.Button
+              onClick={() => downloadWord(worksheetSlug)}
+              icon={<HiDocumentText />}
+            >
+              word دانلود
+            </Menus.Button>
             <Modal.Open opens="detail">
               <Menus.Button icon={<HiEye />}>ویرایش</Menus.Button>
             </Modal.Open>
