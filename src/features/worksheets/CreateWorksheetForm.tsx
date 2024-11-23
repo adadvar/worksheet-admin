@@ -223,23 +223,23 @@ const CreateWorksheetForm = ({
         />
       </FormRow>
 
-      <FormRow label="فایل pdf">
+      <FormRow label="pdf فایل">
         <FileInput
-          id="file_word"
+          id="file_pdf"
           accept="application/pdf"
-          type="file_word"
-          {...register("file_word", {
+          type="file"
+          {...register("file_pdf", {
             required: "این فیلد ضروری است.",
           })}
           onChange={handleFilePdfChange}
         />
       </FormRow>
 
-      <FormRow label="فایل word">
+      <FormRow label="word فایل">
         <FileInput
           id="file_word"
           accept="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-          type="file_word"
+          type="file"
           {...register("file_word", {
             required: "این فیلد ضروری است.",
           })}

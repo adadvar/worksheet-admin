@@ -104,10 +104,39 @@ export async function deleteWorksheet(slug: string) {
   }
 }
 
-export async function downloadPdf(slug: string) {
-  await AxiosAuth.get(`/worksheet/${slug}/download-pdf`);
-}
+async function downloadFile(url: string, fileName: string) {
+  try {
+    const res = await AxiosAuth.get(url, {
+      responseType: "blob", // Set response type to blob for file download
+    });
 
-export async function downloadWord(slug: string) {
-  await AxiosAuth.get(`/worksheet/${slug}/download-word`);
+    // Create a temporary URL for the blob
+    const blobUrl = window.URL.createObjectURL(new Blob([res.data]));
+
+    // Create a link element and trigger the download
+    const link = document.createElement("a");
+    link.href = blobUrl;
+    link.setAttribute("download", fileName); // Set the desired file name
+    document.body.appendChild(link);
+    link.click();
+
+    // Clean up the URL object
+    window.URL.revokeObjectURL(blobUrl);
+  } catch (err: any) {
+    console.log(err);
+    if (err.response && err.response.data && err.response.data.message) {
+      throw new Error(err.response.data.message);
+    } else {
+      throw new Error(`could not download worksheet ${fileName}`);
+    }
+  }
+}
+//@ts-ignore
+export async function downloadPdf({ slug, name }) {
+  await downloadFile(`/worksheet/${slug}/download-pdf`, `${name}.pdf`);
+}
+//@ts-ignore
+
+export async function downloadWord({ slug, name }) {
+  await downloadFile(`/worksheet/${slug}/download-word`, `${name}.docx`);
 }

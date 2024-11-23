@@ -82,13 +82,13 @@ const WorksheetRow = ({ worksheet }: { worksheet: WorksheetModel }) => {
           <Menus.Toggle id={worksheetId} />
           <Menus.List id={worksheetId}>
             <Menus.Button
-              onClick={() => downloadPdf(worksheetSlug)}
+              onClick={() => downloadPdf({ slug: worksheetSlug, name })}
               icon={<HiDocumentText />}
             >
               pdf دانلود
             </Menus.Button>
             <Menus.Button
-              onClick={() => downloadWord(worksheetSlug)}
+              onClick={() => downloadWord({ slug: worksheetSlug, name })}
               icon={<HiDocumentText />}
             >
               word دانلود
