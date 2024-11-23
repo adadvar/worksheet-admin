@@ -7,9 +7,11 @@ const Input = styled.input`
   padding: 0.8rem 1.2rem;
   box-shadow: var(--shadow-sm);
   text-align: right;
+  direction: rtl;
 
   &[type="number"] {
     text-align: left;
+    direction: ltr;
   }
 `;
 

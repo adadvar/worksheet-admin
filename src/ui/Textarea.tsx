@@ -9,6 +9,8 @@ const Textarea = styled.textarea`
   width: 100%;
   height: 8rem;
   text-align: right;
+  direction: rtl;
+  resize: vertical;
 `;
 
 export default Textarea;
