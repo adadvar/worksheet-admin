@@ -18,6 +18,7 @@ const StyledSelect = styled.select<StyledSelectProps>`
   font-weight: 500;
   box-shadow: var(--shadow-sm);
   text-align: right;
+  width: 100%;
 `;
 interface Option {
   value: number;

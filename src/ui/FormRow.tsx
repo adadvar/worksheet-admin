@@ -1,12 +1,13 @@
 import styled from "styled-components";
 
 const StyledFormRow = styled.div`
-  display: grid;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  grid-template-columns: 1fr 24rem;
   gap: 2.4rem;
+  width: 100%;
 
-  padding: 1.2rem 0;
+  margin: 2.4rem 0;
 
   &:first-child {
     padding-top: 0;
@@ -16,9 +17,9 @@ const StyledFormRow = styled.div`
     padding-bottom: 0;
   }
 
-  &:not(:last-child) {
+  /* &:not(:last-child) {
     border-bottom: 1px solid var(--color-grey-100);
-  }
+  } */
 
   &:has(button) {
     display: flex;
@@ -30,6 +31,8 @@ const StyledFormRow = styled.div`
 const Label = styled.label`
   font-weight: 500;
   text-align: right;
+  white-space: nowrap;
+  width: 100%;
 `;
 
 const Error = styled.span`
@@ -46,8 +49,8 @@ interface Props {
 const FormRow = ({ label, error, children }: Props) => {
   return (
     <StyledFormRow>
-      {children}
       {label && <Label htmlFor={children?.props?.id}>{label}</Label>}
+      {children}
       {error && <Error>{error}</Error>}
     </StyledFormRow>
   );

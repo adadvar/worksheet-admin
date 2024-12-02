@@ -56,12 +56,12 @@ export async function logout() {
   }
 }
 
-export async function getCurrentUser1() {
-  const user = JSON.parse(localStorage.getItem("user_admin") as string);
+export async function getCurrentUser() {
+  const { user } = JSON.parse(localStorage.getItem("user_admin") as string);
   return user;
 }
 
-export async function getCurrentUser() {
+export async function getCurrentUser1() {
   try {
     const res = await AxiosAuth.get("/user/me", { timeout: 3000 });
     return res.data;

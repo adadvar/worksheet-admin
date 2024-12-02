@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { uploadBanner as uploadBannerApi } from "../../services/apiWorksheets";
+import { uploadBanner as uploadBannerApi } from "../../services/apiProducts";
 import toast from "react-hot-toast";
 
 export function useUploadBanner() {

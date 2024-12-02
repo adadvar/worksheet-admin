@@ -1,18 +1,18 @@
-import { Worksheet } from "../../services/apiWorksheets";
+import { Product } from "../../services/apiProducts";
 import Empty from "../../ui/Empty";
 import Menus from "../../ui/Menus";
 import Pagination from "../../ui/Pagination";
 import Spinner from "../../ui/Spinner";
 import Table from "../../ui/Table";
-import { useWorksheets } from "./useWorksheets";
-import WorksheetRow from "./WorksheetRow";
+import { useProducts } from "./useProducts";
+import ProductRow from "./ProductRow";
 
-const WorksheetTable = () => {
-  const { isLoading, count, worksheets } = useWorksheets();
+const ProductTable = () => {
+  const { isLoading, count, products } = useProducts();
 
   if (isLoading) return <Spinner />;
 
-  if (!worksheets?.length) return <Empty resourceName="worksheets" />;
+  if (!products?.length) return <Empty resourceName="products" />;
 
   return (
     <Menus>
@@ -29,9 +29,9 @@ const WorksheetTable = () => {
         </Table.Header>
 
         <Table.Body
-          data={worksheets}
-          render={(worksheet: Worksheet) => (
-            <WorksheetRow key={worksheet.id} worksheet={worksheet} />
+          data={products}
+          render={(product: Product) => (
+            <ProductRow key={product.id} product={product} />
           )}
         />
 
@@ -43,4 +43,4 @@ const WorksheetTable = () => {
   );
 };
 
-export default WorksheetTable;
+export default ProductTable;

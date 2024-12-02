@@ -1,32 +1,29 @@
 import React, { useEffect, useState } from "react";
 import { useForm, SubmitHandler, FieldErrors } from "react-hook-form";
-import { Worksheet } from "../../services/apiWorksheets";
 import Form from "../../ui/Form";
 import FormRow from "../../ui/FormRow";
 import Input from "../../ui/Input";
 import Select from "../../ui/Select";
 import Textarea from "../../ui/Textarea";
-import { useCreateWorksheet } from "./useCreateWorksheet";
+import { useCreateProduct } from "./useCreateProduct";
 
 import useCategoryOptions from "./useCategoryOptions";
 import Button from "../../ui/Button";
 import FileInput from "../../ui/FileInput";
 import { useUploadBanner } from "./useUploadBanner";
 import { useUploadFile } from "./useUploadFile";
+import { Product } from "../../services/apiProducts";
+import Row from "../../ui/Row";
 
-const CreateWorksheetForm = ({
-  onCloseModal,
-}: {
-  onCloseModal?: () => void;
-}) => {
-  const { isCreating, createWorksheet } = useCreateWorksheet();
+const CreateProductForm = ({ onCloseModal }: { onCloseModal?: () => void }) => {
+  const { isCreating, createProduct } = useCreateProduct();
   const { uploadBanner } = useUploadBanner();
   const { uploadFile } = useUploadFile();
 
   const isWorking = isCreating;
   //@ts-ignore
   const { register, handleSubmit, reset, formState, setValue } =
-    useForm<Worksheet>();
+    useForm<Product>();
   const [banner, setBanner] = useState<File | null>(null);
   const [fileWord, setFileWord] = useState<File | null>(null);
   const [filePdf, setFilePdf] = useState<File | null>(null);
@@ -115,7 +112,7 @@ const CreateWorksheetForm = ({
     }
   }, [filePdf]);
 
-  const onSubmit: SubmitHandler<Worksheet> = async (data) => {
+  const onSubmit: SubmitHandler<Product> = async (data) => {
     const { name, price, description, grade_id, subject_id, topic_id } = data;
 
     const finalData = {
@@ -135,7 +132,7 @@ const CreateWorksheetForm = ({
     if (filePdfUrl) finalData.file_pdf = filePdfUrl;
 
     //@ts-ignore
-    createWorksheet(finalData, {
+    createProduct(finalData, {
       onSuccess: () => {
         reset();
         onCloseModal?.();
@@ -143,7 +140,7 @@ const CreateWorksheetForm = ({
     });
   };
 
-  const onError = (err: FieldErrors<Worksheet>) => {
+  const onError = (err: FieldErrors<Product>) => {
     console.log(err);
   };
 
@@ -152,26 +149,28 @@ const CreateWorksheetForm = ({
       onSubmit={handleSubmit(onSubmit, onError)}
       type={onCloseModal ? "modal" : "regular"}
     >
-      <FormRow label="نام کاربرگ" error={errors?.name?.message}>
-        <Input
-          type="text"
-          id="name"
-          disabled={isWorking}
-          {...register("name", { required: "این فیلد ضروری است." })}
-        />
-      </FormRow>
+      <Row type="horizontal">
+        <FormRow label="نام کاربرگ" error={errors?.name?.message}>
+          <Input
+            type="text"
+            id="name"
+            disabled={isWorking}
+            {...register("name", { required: "این فیلد ضروری است." })}
+          />
+        </FormRow>
 
-      <FormRow label="قیمت کاربرگ" error={errors?.price?.message}>
-        <Input
-          type="number"
-          id="price"
-          disabled={isWorking}
-          {...register("price", {
-            required: "این فیلد ضروری است.",
-            min: { value: 1, message: "قیمت حداقل باید 1 باشد." },
-          })}
-        />
-      </FormRow>
+        <FormRow label="قیمت کاربرگ" error={errors?.price?.message}>
+          <Input
+            type="number"
+            id="price"
+            disabled={isWorking}
+            {...register("price", {
+              required: "این فیلد ضروری است.",
+              min: { value: 1, message: "قیمت حداقل باید 1 باشد." },
+            })}
+          />
+        </FormRow>
+      </Row>
 
       <FormRow label="توضیحات کاربرگ" error={errors?.description?.message}>
         <Textarea
@@ -181,86 +180,94 @@ const CreateWorksheetForm = ({
         />
       </FormRow>
 
-      <FormRow label="پایه" error={errors?.grade_id?.message}>
-        <Select
-          id="grade_id"
-          type="white"
-          disabled={isWorking}
-          options={gradeOptions}
-          {...register("grade_id", { required: "این فیلد ضروری است." })}
-          onChange={handleGradeChange}
-        />
-      </FormRow>
-      <FormRow label="درس" error={errors?.subject_id?.message}>
-        <Select
-          id="subject_id"
-          type="white"
-          disabled={isWorking}
-          options={subjectOptions}
-          {...register("subject_id", { required: "این فیلد ضروری است." })}
-          onChange={handleSubjectChange}
-        />
-      </FormRow>
-      <FormRow label="موضوع" error={errors?.topic_id?.message}>
-        <Select
-          id="topic_id"
-          type="white"
-          disabled={isWorking}
-          options={topicOptions}
-          {...register("topic_id", { required: "این فیلد ضروری است." })}
-        />
-      </FormRow>
+      <Row type="horizontal">
+        <FormRow label="پایه" error={errors?.grade_id?.message}>
+          <Select
+            id="grade_id"
+            type="white"
+            disabled={isWorking}
+            options={gradeOptions}
+            {...register("grade_id", { required: "این فیلد ضروری است." })}
+            onChange={handleGradeChange}
+          />
+        </FormRow>
+        <FormRow label="درس" error={errors?.subject_id?.message}>
+          <Select
+            id="subject_id"
+            type="white"
+            disabled={isWorking}
+            options={subjectOptions}
+            {...register("subject_id", { required: "این فیلد ضروری است." })}
+            onChange={handleSubjectChange}
+          />
+        </FormRow>
+        <FormRow label="موضوع" error={errors?.topic_id?.message}>
+          <Select
+            id="topic_id"
+            type="white"
+            disabled={isWorking}
+            options={topicOptions}
+            {...register("topic_id", { required: "این فیلد ضروری است." })}
+          />
+        </FormRow>
+      </Row>
 
-      <FormRow label="عکس بنر">
-        <FileInput
-          id="banner"
-          accept="image/*"
-          type="file"
-          {...register("banner", {
-            required: "این فیلد ضروری است.",
-          })}
-          onChange={handleBannerChange}
-        />
-      </FormRow>
+      <Row type="horizontal">
+        <FormRow label="عکس بنر">
+          <FileInput
+            id="banner"
+            accept="image/*"
+            type="file"
+            {...register("banner", {
+              required: "این فیلد ضروری است.",
+            })}
+            onChange={handleBannerChange}
+          />
+        </FormRow>
 
-      <FormRow label="pdf فایل">
-        <FileInput
-          id="file_pdf"
-          accept="application/pdf"
-          type="file"
-          {...register("file_pdf", {
-            required: "این فیلد ضروری است.",
-          })}
-          onChange={handleFilePdfChange}
-        />
-      </FormRow>
+        <FormRow label="pdf فایل">
+          <FileInput
+            id="file_pdf"
+            accept="application/pdf"
+            type="file"
+            {...register("file_pdf", {
+              required: "این فیلد ضروری است.",
+            })}
+            onChange={handleFilePdfChange}
+          />
+        </FormRow>
 
-      <FormRow label="word فایل">
-        <FileInput
-          id="file_word"
-          accept="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-          type="file"
-          {...register("file_word", {
-            required: "این فیلد ضروری است.",
-          })}
-          onChange={handleFileWordChange}
-        />
-      </FormRow>
+        <FormRow label="word فایل">
+          <FileInput
+            id="file_word"
+            accept="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+            type="file"
+            {...register("file_word", {
+              required: "این فیلد ضروری است.",
+            })}
+            onChange={handleFileWordChange}
+          />
+        </FormRow>
+      </Row>
 
-      <FormRow>
-        {/* type is an HTML attribute! */}
-        <Button
-          disabled={isWorking}
-          $variation="secondary"
-          type="reset"
-          onClick={() => onCloseModal?.()}
-        >
-          انصراف
-        </Button>
-        <Button disabled={isWorking}>{"افزودن کاربرگ جدید"}</Button>
-      </FormRow>
+      <Row type="horizontal">
+        <FormRow>
+          {/* type is an HTML attribute! */}
+          <Button disabled={isWorking}>{"افزودن کاربرگ جدید"}</Button>
+        </FormRow>
+        <FormRow>
+          <Button
+            disabled={isWorking}
+            $variation="secondary"
+            type="reset"
+            onClick={() => onCloseModal?.()}
+          >
+            انصراف
+          </Button>
+        </FormRow>
+      </Row>
     </Form>
   );
 };
 
-export default CreateWorksheetForm;
+export default CreateProductForm;

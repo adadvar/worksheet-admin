@@ -1,20 +1,20 @@
 import Modal from "../../ui/Modal";
 import Button from "../../ui/Button";
-import CreateWorksheetForm from "./CreateWorksheetForm";
+import CreateProductForm from "./CreateProductForm";
 
-const AddWorksheet = () => {
+const AddProduct = () => {
   return (
     <>
       <Modal>
-        <Modal.Open opens="worksheet-form">
+        <Modal.Open opens="product-form">
           <Button>افزودن کاربرگ</Button>
         </Modal.Open>
-        <Modal.Window name="worksheet-form">
-          <CreateWorksheetForm />
+        <Modal.Window name="product-form">
+          <CreateProductForm />
         </Modal.Window>
       </Modal>
     </>
   );
 };
 
-export default AddWorksheet;
+export default AddProduct;

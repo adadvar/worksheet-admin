@@ -1,20 +1,20 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
-import { deleteWorksheet as deleteWorksheetApi } from "../../services/apiWorksheets";
+import { deleteProduct as deleteProductApi } from "../../services/apiProducts";
 
-export function useDeleteWorksheet() {
+export function useDeleteProduct() {
   const queryClient = useQueryClient();
 
-  const { mutate: deleteWorksheet, isPending: isDeleting } = useMutation({
-    mutationFn: deleteWorksheetApi,
+  const { mutate: deleteProduct, isPending: isDeleting } = useMutation({
+    mutationFn: deleteProductApi,
     onSuccess: (data) => {
       toast.success(data.message || "کاربرگ با موفقیت حذف شد");
       queryClient.invalidateQueries({
-        queryKey: ["worksheets"],
+        queryKey: ["products"],
       });
     },
     onError: (err) => toast.error(err.message),
   });
 
-  return { isDeleting, deleteWorksheet };
+  return { isDeleting, deleteProduct };
 }

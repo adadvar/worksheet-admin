@@ -66,7 +66,7 @@ const MainNav = () => {
           </StyledNavLink>
         </li>
         <li>
-          <StyledNavLink to="/worksheets">
+          <StyledNavLink to="/products">
             <HiOutlineClipboardDocumentList />
             <span>کاربرگ‌ها</span>
           </StyledNavLink>

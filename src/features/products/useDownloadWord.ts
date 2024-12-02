@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { downloadWord as downloadWordApi } from "../../services/apiWorksheets";
+import { downloadWord as downloadWordApi } from "../../services/apiProducts";
 
 export function useDownloadWord() {
   const { mutate: downloadWord, isPending: isDownloading } = useMutation({

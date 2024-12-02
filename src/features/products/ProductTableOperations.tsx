@@ -3,7 +3,7 @@ import FilterSelect from "../../ui/FilterSelect";
 import SortBy from "../../ui/SortBy";
 import TableOperations from "../../ui/TableOperations";
 
-const WorksheetTableOperations = () => {
+const ProductTableOperations = () => {
   return (
     <TableOperations>
       <Filter
@@ -51,4 +51,4 @@ const WorksheetTableOperations = () => {
   );
 };
 
-export default WorksheetTableOperations;
+export default ProductTableOperations;

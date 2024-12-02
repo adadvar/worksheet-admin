@@ -19,14 +19,14 @@ export function useUsers() {
   // PRE-FETCHING
   if (page < pageCount) {
     queryClient.prefetchQuery({
-      queryKey: ["worksheets", page + 1],
+      queryKey: ["products", page + 1],
       queryFn: () => getUsers({ page: page + 1 }),
     });
   }
 
   if (page > 1) {
     queryClient.prefetchQuery({
-      queryKey: ["worksheets", page - 1],
+      queryKey: ["products", page - 1],
       queryFn: () => getUsers({ page: page - 1 }),
     });
   }

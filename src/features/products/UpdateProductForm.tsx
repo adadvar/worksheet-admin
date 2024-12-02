@@ -1,35 +1,36 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useForm, SubmitHandler, FieldErrors } from "react-hook-form";
-import { Worksheet } from "../../services/apiWorksheets";
+import { Product } from "../../services/apiProducts";
 import Form from "../../ui/Form";
 import FormRow from "../../ui/FormRow";
 import Input from "../../ui/Input";
 import Select from "../../ui/Select";
 import Textarea from "../../ui/Textarea";
-import { useCreateWorksheet } from "./useCreateWorksheet";
-import { useUpdateWorksheet } from "./useUpdateWorksheet";
+import { useCreateProduct } from "./useCreateProduct";
+import { useUpdateProduct } from "./useUpdateProduct";
 
 import useCategoryOptions from "./useCategoryOptions";
 import Button from "../../ui/Button";
 import FileInput from "../../ui/FileInput";
 import { useUploadBanner } from "./useUploadBanner";
 import { useUploadFile } from "./useUploadFile";
+import Row from "../../ui/Row";
 
-const UpdateWorksheetForm = ({
+const UpdateProductForm = ({
   onCloseModal,
-  worksheetToUpdate,
+  productToUpdate,
 }: {
   onCloseModal?: () => void;
-  worksheetToUpdate: Worksheet;
+  productToUpdate: Product;
 }) => {
-  const { isCreating } = useCreateWorksheet();
-  const { isUpdating, updateWorksheet } = useUpdateWorksheet();
+  const { isCreating } = useCreateProduct();
+  const { isUpdating, updateProduct } = useUpdateProduct();
   const { uploadBanner } = useUploadBanner();
   const { uploadFile } = useUploadFile();
 
   const isWorking = isCreating || isUpdating;
   //@ts-ignore
-  const { id: updateId, slug: updateSlug, ...updateValues } = worksheetToUpdate;
+  const { id: updateId, slug: updateSlug, ...updateValues } = productToUpdate;
   const {
     name,
     price,
@@ -42,7 +43,7 @@ const UpdateWorksheetForm = ({
     file_pdf,
   } = updateValues;
   const { register, handleSubmit, reset, formState, setValue } =
-    useForm<Worksheet>({
+    useForm<Product>({
       defaultValues: {
         name,
         price,
@@ -171,7 +172,7 @@ const UpdateWorksheetForm = ({
     }
   }, [filePdf]);
 
-  const onSubmit: SubmitHandler<Worksheet> = async (data) => {
+  const onSubmit: SubmitHandler<Product> = async (data) => {
     const { name, price, description, grade_id, subject_id, topic_id } = data;
 
     const finalData = {
@@ -190,9 +191,9 @@ const UpdateWorksheetForm = ({
     //@ts-ignore
     if (filePdfUrl) finalData.file_pdf = filePdfUrl;
 
-    updateWorksheet(
+    updateProduct(
       //@ts-ignore
-      { newWorksheetData: finalData, slug: updateSlug },
+      { newProductData: finalData, slug: updateSlug },
       {
         onSuccess: () => {
           reset();
@@ -202,7 +203,7 @@ const UpdateWorksheetForm = ({
     );
   };
 
-  const onError = (err: FieldErrors<Worksheet>) => {
+  const onError = (err: FieldErrors<Product>) => {
     console.log(err);
   };
 
@@ -211,27 +212,28 @@ const UpdateWorksheetForm = ({
       onSubmit={handleSubmit(onSubmit, onError)}
       type={onCloseModal ? "modal" : "regular"}
     >
-      <FormRow label="نام کاربرگ" error={errors?.name?.message}>
-        <Input
-          type="text"
-          id="name"
-          disabled={isWorking}
-          {...register("name", { required: "این فیلد ضروری است." })}
-        />
-      </FormRow>
+      <Row type="horizontal">
+        <FormRow label="نام کاربرگ" error={errors?.name?.message}>
+          <Input
+            type="text"
+            id="name"
+            disabled={isWorking}
+            {...register("name", { required: "این فیلد ضروری است." })}
+          />
+        </FormRow>
 
-      <FormRow label="قیمت کاربرگ" error={errors?.price?.message}>
-        <Input
-          type="number"
-          id="price"
-          disabled={isWorking}
-          {...register("price", {
-            required: "این فیلد ضروری است.",
-            min: { value: 1, message: "قیمت حداقل باید 1 باشد." },
-          })}
-        />
-      </FormRow>
-
+        <FormRow label="قیمت کاربرگ" error={errors?.price?.message}>
+          <Input
+            type="number"
+            id="price"
+            disabled={isWorking}
+            {...register("price", {
+              required: "این فیلد ضروری است.",
+              min: { value: 1, message: "قیمت حداقل باید 1 باشد." },
+            })}
+          />
+        </FormRow>
+      </Row>
       <FormRow label="توضیحات کاربرگ" error={errors?.description?.message}>
         <Textarea
           id="description"
@@ -239,90 +241,95 @@ const UpdateWorksheetForm = ({
           {...register("description", { required: "این فیلد ضروری است." })}
         />
       </FormRow>
+      <Row type="horizontal">
+        <FormRow label="پایه" error={errors?.grade_id?.message}>
+          <Select
+            id="grade_id"
+            type="white"
+            disabled={isWorking}
+            options={gradeOptions}
+            defaultValue={updateValues.grade_id?.toString()}
+            {...register("grade_id", { required: false })}
+            onChange={handleGradeChange}
+          />
+        </FormRow>
+        <FormRow label="درس" error={errors?.subject_id?.message}>
+          <Select
+            id="subject_id"
+            type="white"
+            disabled={isWorking}
+            options={subjectOptions}
+            defaultValue={updateValues.subject_id?.toString()}
+            {...register("subject_id", { required: false })}
+            onChange={handleSubjectChange}
+          />
+        </FormRow>
+        <FormRow label="موضوع" error={errors?.topic_id?.message}>
+          <Select
+            id="topic_id"
+            type="white"
+            disabled={isWorking}
+            options={topicOptions}
+            defaultValue={updateValues.topic_id?.toString()}
+            {...register("topic_id", { required: false })}
+          />
+        </FormRow>
+      </Row>
+      <Row type="horizontal">
+        <FormRow label="عکس بنر">
+          <FileInput
+            id="banner"
+            accept="image/*"
+            type="file"
+            {...register("banner", {
+              required: false,
+            })}
+            onChange={handleBannerChange}
+          />
+        </FormRow>
 
-      <FormRow label="پایه" error={errors?.grade_id?.message}>
-        <Select
-          id="grade_id"
-          type="white"
-          disabled={isWorking}
-          options={gradeOptions}
-          defaultValue={updateValues.grade_id?.toString()}
-          {...register("grade_id", { required: false })}
-          onChange={handleGradeChange}
-        />
-      </FormRow>
-      <FormRow label="درس" error={errors?.subject_id?.message}>
-        <Select
-          id="subject_id"
-          type="white"
-          disabled={isWorking}
-          options={subjectOptions}
-          defaultValue={updateValues.subject_id?.toString()}
-          {...register("subject_id", { required: false })}
-          onChange={handleSubjectChange}
-        />
-      </FormRow>
-      <FormRow label="موضوع" error={errors?.topic_id?.message}>
-        <Select
-          id="topic_id"
-          type="white"
-          disabled={isWorking}
-          options={topicOptions}
-          defaultValue={updateValues.topic_id?.toString()}
-          {...register("topic_id", { required: false })}
-        />
-      </FormRow>
+        <FormRow label="فایل pdf">
+          <FileInput
+            id="file_word"
+            accept="application/pdf"
+            type="file_word"
+            {...register("file_word", {
+              required: false,
+            })}
+            onChange={handleFilePdfChange}
+          />
+        </FormRow>
 
-      <FormRow label="عکس بنر">
-        <FileInput
-          id="banner"
-          accept="image/*"
-          type="file"
-          {...register("banner", {
-            required: false,
-          })}
-          onChange={handleBannerChange}
-        />
-      </FormRow>
-
-      <FormRow label="فایل pdf">
-        <FileInput
-          id="file_word"
-          accept="application/pdf"
-          type="file_word"
-          {...register("file_word", {
-            required: false,
-          })}
-          onChange={handleFilePdfChange}
-        />
-      </FormRow>
-
-      <FormRow label="فایل word">
-        <FileInput
-          id="file_word"
-          accept="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-          type="file_word"
-          {...register("file_word", {
-            required: false,
-          })}
-          onChange={handleFileWordChange}
-        />
-      </FormRow>
-
-      <FormRow>
-        {/* type is an HTML attribute! */}
-        <Button
-          disabled={isWorking}
-          $variation="secondary"
-          type="reset"
-          onClick={() => onCloseModal?.()}
-        >
-          انصراف
-        </Button>
-        <Button disabled={isWorking}>{"ویرایش  کاربرگ"}</Button>
-      </FormRow>
+        <FormRow label="فایل word">
+          <FileInput
+            id="file_word"
+            accept="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+            type="file_word"
+            {...register("file_word", {
+              required: false,
+            })}
+            onChange={handleFileWordChange}
+          />
+        </FormRow>
+      </Row>
+      <Row type="horizontal">
+        <FormRow>
+          {/* type is an HTML attribute! */}
+          <Button disabled={isWorking}>{"ویرایش  کاربرگ"}</Button>
+        </FormRow>
+        <FormRow>
+          <Button
+            disabled={isWorking}
+            $variation="secondary"
+            type="reset"
+            onClick={() => onCloseModal?.()}
+          >
+            انصراف
+          </Button>
+        </FormRow>
+      </Row>
     </Form>
   );
 };
 
-export default UpdateWorksheetForm;
+export default UpdateProductForm;

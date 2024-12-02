@@ -1,7 +1,7 @@
 import { Category } from "./apiCategory";
 import { Axios, AxiosAuth, AxiosFile } from "./axiosInstance";
 
-export interface Worksheet {
+export interface Product {
   age: string;
   banner: string;
   grade_id: number | null;
@@ -28,9 +28,9 @@ export interface Worksheet {
 interface Props {
   page?: number;
 }
-export async function getWorksheets({ page = 1 }: Props) {
+export async function getProducts({ page = 1 }: Props) {
   try {
-    const res = await Axios.get("/worksheet/list", {
+    const res = await Axios.get("/product/list", {
       params: { page },
     });
     return res.data;
@@ -42,7 +42,7 @@ export async function getWorksheets({ page = 1 }: Props) {
 
 export async function uploadBanner(params: any) {
   try {
-    const res = await AxiosFile.post("/worksheet/upload/banner", params);
+    const res = await AxiosFile.post("/product/upload/banner", params);
     return res.data;
   } catch (err: any) {
     console.log(err.message);
@@ -53,7 +53,7 @@ export async function uploadBanner(params: any) {
 
 export async function uploadFile(params: any) {
   try {
-    const res = await AxiosFile.post("/worksheet/upload/file", params);
+    const res = await AxiosFile.post("/product/upload/file", params);
     return res.data;
   } catch (err: any) {
     console.log(err.message);
@@ -62,44 +62,44 @@ export async function uploadFile(params: any) {
   }
 }
 
-export async function createWorksheet(worksheet: Worksheet) {
+export async function createProduct(product: Product) {
   try {
-    const res = await AxiosAuth.post("/worksheet", worksheet);
+    const res = await AxiosAuth.post("/product", product);
     return res.data;
   } catch (err: any) {
     console.log(err);
     if (err.response && err.response.data && err.response.data.message) {
       throw new Error(err.response.data.message);
     } else {
-      throw new Error("could not create worksheet");
+      throw new Error("could not create product");
     }
   }
 }
 
-export async function updateWorksheet(slug: string, params: any) {
+export async function updateProduct(slug: string, params: any) {
   try {
-    const res = await AxiosAuth.put(`/worksheet/${slug}`, params);
+    const res = await AxiosAuth.put(`/product/${slug}`, params);
     return res.data;
   } catch (err: any) {
     console.log(err);
     if (err.response && err.response.data && err.response.data.message) {
       throw new Error(err.response.data.message);
     } else {
-      throw new Error("could not update worksheet");
+      throw new Error("could not update product");
     }
   }
 }
 
-export async function deleteWorksheet(slug: string) {
+export async function deleteProduct(slug: string) {
   try {
-    const res = await AxiosAuth.delete(`/worksheet/${slug}`);
+    const res = await AxiosAuth.delete(`/product/${slug}`);
     return res.data;
   } catch (err: any) {
     console.log(err);
     if (err.response && err.response.data && err.response.data.message) {
       throw new Error(err.response.data.message);
     } else {
-      throw new Error("could not delete worksheet");
+      throw new Error("could not delete product");
     }
   }
 }
@@ -127,16 +127,16 @@ async function downloadFile(url: string, fileName: string) {
     if (err.response && err.response.data && err.response.data.message) {
       throw new Error(err.response.data.message);
     } else {
-      throw new Error(`could not download worksheet ${fileName}`);
+      throw new Error(`could not download product ${fileName}`);
     }
   }
 }
 //@ts-ignore
 export async function downloadPdf({ slug, name }) {
-  await downloadFile(`/worksheet/${slug}/download-pdf`, `${name}.pdf`);
+  await downloadFile(`/product/${slug}/download-pdf`, `${name}.pdf`);
 }
 //@ts-ignore
 
 export async function downloadWord({ slug, name }) {
-  await downloadFile(`/worksheet/${slug}/download-word`, `${name}.docx`);
+  await downloadFile(`/product/${slug}/download-word`, `${name}.docx`);
 }

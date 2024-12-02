@@ -8,6 +8,7 @@ const Input = styled.input`
   box-shadow: var(--shadow-sm);
   text-align: right;
   direction: rtl;
+  width: 100%;
 
   &[type="number"] {
     text-align: left;

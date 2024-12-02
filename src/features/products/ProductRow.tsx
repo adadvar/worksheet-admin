@@ -5,9 +5,9 @@ import Modal from "../../ui/Modal";
 import Menus from "../../ui/Menus";
 import { HiDocumentText, HiEye, HiTrash } from "react-icons/hi2";
 import ConfirmDelete from "../../ui/ConfirmDelete";
-import { Worksheet as WorksheetModel } from "../../services/apiWorksheets";
-import UpdateWorksheetForm from "./UpdateWorksheetForm";
-import { useDeleteWorksheet } from "./useDeleteWorksheet";
+import { Product as ProductModel } from "../../services/apiProducts";
+import UpdateProductForm from "./UpdateProductForm";
+import { useDeleteProduct } from "./useDeleteProduct";
 import BannerPreview from "./BannerPreview";
 import { useDownloadPdf } from "./useDownloadPdf";
 import { useDownloadWord } from "./useDownloadWord";
@@ -22,7 +22,7 @@ const Img = styled.img`
   cursor: pointer;
 `;
 
-const Worksheet = styled.div`
+const Product = styled.div`
   font-size: 1.6rem;
   font-weight: 600;
   color: var(--color-grey-600);
@@ -50,10 +50,10 @@ const Stacked = styled.div`
 const Amount = styled.div`
   font-weight: 500;
 `;
-const WorksheetRow = ({ worksheet }: { worksheet: WorksheetModel }) => {
+const ProductRow = ({ product }: { product: ProductModel }) => {
   const {
-    id: worksheetId,
-    slug: worksheetSlug,
+    id: productId,
+    slug: productSlug,
     banner_link,
     name,
     price,
@@ -62,8 +62,8 @@ const WorksheetRow = ({ worksheet }: { worksheet: WorksheetModel }) => {
     topic: { name: topic },
     // file_link: pdf_link,
     age,
-  } = worksheet;
-  const { deleteWorksheet, isDeleting } = useDeleteWorksheet();
+  } = product;
+  const { deleteProduct, isDeleting } = useDeleteProduct();
   const { downloadPdf } = useDownloadPdf();
   const { downloadWord } = useDownloadWord();
   return (
@@ -72,23 +72,23 @@ const WorksheetRow = ({ worksheet }: { worksheet: WorksheetModel }) => {
         <Modal.Open opens="banner">
           <Img src={banner_link} />
         </Modal.Open>
-        <Worksheet>{name}</Worksheet>
+        <Product>{name}</Product>
         <Stacked>{grade}</Stacked>
         <Stacked>{subject}</Stacked>
         <Stacked>{topic}</Stacked>
         <Amount>{formatCurrency(price)}</Amount>
         <Stacked>{age}</Stacked>
         <Menus.Menu>
-          <Menus.Toggle id={worksheetId} />
-          <Menus.List id={worksheetId}>
+          <Menus.Toggle id={productId} />
+          <Menus.List id={productId}>
             <Menus.Button
-              onClick={() => downloadPdf({ slug: worksheetSlug, name })}
+              onClick={() => downloadPdf({ slug: productSlug, name })}
               icon={<HiDocumentText />}
             >
               pdf دانلود
             </Menus.Button>
             <Menus.Button
-              onClick={() => downloadWord({ slug: worksheetSlug, name })}
+              onClick={() => downloadWord({ slug: productSlug, name })}
               icon={<HiDocumentText />}
             >
               word دانلود
@@ -103,17 +103,17 @@ const WorksheetRow = ({ worksheet }: { worksheet: WorksheetModel }) => {
         </Menus.Menu>
 
         <Modal.Window name="banner">
-          <BannerPreview banner={worksheet.banner_link} />
+          <BannerPreview banner={product.banner_link} />
         </Modal.Window>
 
         <Modal.Window name="detail">
-          <UpdateWorksheetForm worksheetToUpdate={worksheet} />
+          <UpdateProductForm productToUpdate={product} />
         </Modal.Window>
 
         <Modal.Window name="delete">
           <ConfirmDelete
             resourceName="کاربرگ"
-            onConfirm={() => deleteWorksheet(worksheetSlug)}
+            onConfirm={() => deleteProduct(productSlug)}
             disabled={isDeleting}
           />
         </Modal.Window>
@@ -122,4 +122,4 @@ const WorksheetRow = ({ worksheet }: { worksheet: WorksheetModel }) => {
   );
 };
 
-export default WorksheetRow;
+export default ProductRow;

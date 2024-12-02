@@ -3,7 +3,7 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import GlobalStyles from "./styles/GlobalStyles";
 import ProtectedRoute from "./ui/ProtectedRoute";
 import AppLayout from "./ui/AppLayout";
-import Worksheets from "./pages/Worksheets";
+import Products from "./pages/Products";
 import Orders from "./pages/Orders";
 import Users from "./pages/Users";
 import Login from "./pages/Login";
@@ -41,7 +41,7 @@ function App() {
             >
               <Route index element={<Navigate replace to="dashboard" />} />
               <Route path="dashboard" element={<Dashboard />} />
-              <Route path="worksheets" element={<Worksheets />} />
+              <Route path="products" element={<Products />} />
               <Route path="orders" element={<Orders />} />
               <Route path="settings" element={<Settings />} />
               <Route path="users" element={<Users />} />
