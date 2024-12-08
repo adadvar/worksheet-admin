@@ -34,6 +34,7 @@ const UpdateProductForm = ({
   const {
     name,
     price,
+    type,
     description,
     grade_id,
     subject_id,
@@ -47,6 +48,7 @@ const UpdateProductForm = ({
       defaultValues: {
         name,
         price,
+        type,
         description,
         grade_id,
         subject_id,
@@ -69,6 +71,7 @@ const UpdateProductForm = ({
     [
       name,
       price,
+      type,
       description,
       grade_id,
       subject_id,
@@ -178,6 +181,7 @@ const UpdateProductForm = ({
     const finalData = {
       name,
       price,
+      type,
       description,
       grade_id,
       subject_id,
@@ -217,6 +221,7 @@ const UpdateProductForm = ({
           <Input
             type="text"
             id="name"
+            autoFocus
             disabled={isWorking}
             {...register("name", { required: "این فیلد ضروری است." })}
           />
@@ -231,6 +236,19 @@ const UpdateProductForm = ({
               required: "این فیلد ضروری است.",
               min: { value: 1, message: "قیمت حداقل باید 1 باشد." },
             })}
+          />
+        </FormRow>
+
+        <FormRow label="نوع" error={errors?.type?.message}>
+          <Select
+            id="type"
+            type="white"
+            defaultValue="worksheet"
+            options={[
+              { value: "worksheet", label: "کاربرگ" },
+              { value: "tools", label: "ابزار‌های آموزشی" },
+            ]}
+            {...register("type", { required: "این فیلد ضروری است." })}
           />
         </FormRow>
       </Row>
@@ -292,7 +310,7 @@ const UpdateProductForm = ({
           <FileInput
             id="file_word"
             accept="application/pdf"
-            type="file_word"
+            type="file"
             {...register("file_word", {
               required: false,
             })}
@@ -304,7 +322,7 @@ const UpdateProductForm = ({
           <FileInput
             id="file_word"
             accept="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-            type="file_word"
+            type="file"
             {...register("file_word", {
               required: false,
             })}

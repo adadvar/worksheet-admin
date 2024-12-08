@@ -2,6 +2,7 @@ import { Category } from "./apiCategory";
 import { Axios, AxiosAuth, AxiosFile } from "./axiosInstance";
 
 export interface Product {
+  type: string;
   age: string;
   banner: string;
   grade_id: number | null;

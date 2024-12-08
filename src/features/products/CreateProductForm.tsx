@@ -113,11 +113,13 @@ const CreateProductForm = ({ onCloseModal }: { onCloseModal?: () => void }) => {
   }, [filePdf]);
 
   const onSubmit: SubmitHandler<Product> = async (data) => {
-    const { name, price, description, grade_id, subject_id, topic_id } = data;
+    const { name, price, type, description, grade_id, subject_id, topic_id } =
+      data;
 
     const finalData = {
       name,
       price,
+      type,
       description,
       grade_id,
       subject_id,
@@ -154,6 +156,7 @@ const CreateProductForm = ({ onCloseModal }: { onCloseModal?: () => void }) => {
           <Input
             type="text"
             id="name"
+            autoFocus
             disabled={isWorking}
             {...register("name", { required: "این فیلد ضروری است." })}
           />
@@ -168,6 +171,19 @@ const CreateProductForm = ({ onCloseModal }: { onCloseModal?: () => void }) => {
               required: "این فیلد ضروری است.",
               min: { value: 1, message: "قیمت حداقل باید 1 باشد." },
             })}
+          />
+        </FormRow>
+
+        <FormRow label="نوع" error={errors?.type?.message}>
+          <Select
+            id="type"
+            type="white"
+            defaultValue="worksheet"
+            options={[
+              { value: "worksheet", label: "کاربرگ" },
+              { value: "tools", label: "ابزار‌های آموزشی" },
+            ]}
+            {...register("type", { required: "این فیلد ضروری است." })}
           />
         </FormRow>
       </Row>
@@ -243,7 +259,8 @@ const CreateProductForm = ({ onCloseModal }: { onCloseModal?: () => void }) => {
             accept="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
             type="file"
             {...register("file_word", {
-              required: "این فیلد ضروری است.",
+              required: false,
+              // required: "این فیلد ضروری است.",
             })}
             onChange={handleFileWordChange}
           />
