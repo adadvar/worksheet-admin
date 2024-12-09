@@ -234,7 +234,7 @@ const UpdateProductForm = ({
             disabled={isWorking}
             {...register("price", {
               required: "این فیلد ضروری است.",
-              min: { value: 1, message: "قیمت حداقل باید 1 باشد." },
+              min: { value: 0, message: "قیمت حداقل باید 0 باشد." },
             })}
           />
         </FormRow>
